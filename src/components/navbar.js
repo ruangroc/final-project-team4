@@ -14,7 +14,7 @@ export default function Navigation(){
             </Nav>
             <Nav>   
             <Nav.Link href="/collabplaylist">Collab Playlist</Nav.Link>
-            <Nav.Link href="/playlistcombiner">Playlist Combiner</Nav.Link>
+            <Nav.Link href="/combineplaylists">Playlist Combiner</Nav.Link>
             <Nav.Link href="/developers">Developers</Nav.Link>
          </Nav>
             

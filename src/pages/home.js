@@ -9,7 +9,7 @@ export default function Home() {
          <Container>
              <Row>
                  <Col>
-                     <h1>  Spotify</h1>
+                     <h1> Spotify Interactive </h1>
                  </Col>
              </Row>
          </Container>

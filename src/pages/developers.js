@@ -12,7 +12,7 @@ function Developers() {
     return (
         <>
         <Navigation/>
-        <Container fluid>
+        <Container>
             <Row css={row}>
                 <Col>
                     <h1 css={row}>Meet the Developers!</h1>
