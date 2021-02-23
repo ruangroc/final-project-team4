@@ -1,15 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import { Route, Switch, useParams, Redirect} from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
 import Home from "./pages/home";
 import Developers from "./pages/developers";
 import Error from "./pages/error";
 import ComhinePlaylists from "./pages/combineplaylists";
 import CollabPlaylist from "./pages/collabplaylist";
-
-
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

@@ -2,15 +2,7 @@
 import Navigation from "../components/navbar";
 import {Container, Row, Col} from 'react-bootstrap';
 import {css} from '@emotion/react';
-import {
-    Route,
-    Switch,
-    Link,
-    NavLink,
-    Redirect,
-    useParams,
-    useRouteMatch
-  } from 'react-router-dom';
+import {Route,Switch,useParams,useRouteMatch} from 'react-router-dom';
 
 function Developer() {
     const {developer} = useParams();
