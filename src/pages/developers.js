@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
 import {Container, Row, Col} from 'react-bootstrap';
 import {css} from '@emotion/react';
-import {Route,Switch,useParams,useRouteMatch, Redirect} from 'react-router-dom';
+import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
 
 
@@ -67,13 +67,13 @@ function Developers() {
                     </Row>
                     <Row css={row}>
                         <Col>
-                            <h2> Anita</h2>
+                            <Link to="/developers/anita"> <h2> Anita</h2> </Link>
                         </Col>
                         <Col>
-                            <h2> Kristina</h2>
+                            <Link to="/developers/kristina"> <h2>Kristina</h2> </Link>
                         </Col>
                         <Col>
-                             <h2> ThuyVy</h2>
+                            <Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link>
                         </Col>
                     </Row>
                 </Route>
