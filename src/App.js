@@ -5,6 +5,8 @@ import Developers from "./pages/developers";
 import Error from "./pages/error";
 import ComhinePlaylists from "./pages/combineplaylists";
 import CollabPlaylist from "./pages/collabplaylist";
+import Redirect from "./pages/redirect";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -14,6 +16,7 @@ function App() {
       <Route path="/developers" component={Developers}/>
       <Route path="/combineplaylists" component={ComhinePlaylists}/>
       <Route path="/collabplaylist" component={CollabPlaylist}/>
+      <Route path="/redirect" component={Redirect}/>
 
       <Route exact path="/" component={Home}/>
       <Route component={Error} />
