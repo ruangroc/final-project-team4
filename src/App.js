@@ -1,5 +1,6 @@
 import './App.css';
 import { Route, Switch} from 'react-router-dom';
+import { Provider } from 'react-redux';
 import Home from "./pages/home";
 import Developers from "./pages/developers";
 import Error from "./pages/error";
