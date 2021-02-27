@@ -1,22 +1,19 @@
 import Navigation from "../components/navbar";
 import {Container, Row, Col} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAuth, isLoggedIn } from '../redux/selectors';
+import { useSelector } from 'react-redux';
+import { isLoggedIn } from '../redux/selectors';
 
-// react spotify package
+// Spotify Auth package
 import { SpotifyAuth, Scopes } from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css'
+import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 export default function Home() {
 
-    const handleLogin = () => {
+    /*const handleLogin = () => {
         window.location = `https://accounts.spotify.com/authorize?client_id=164e3321d4714ea2b1d88976aeecb258&redirect_uri=http://localhost:3000/redirect&response_type=token&show_dialog=true`;
-    };
+    };*/
 
-    // change this to redux later
-    /*const token = localStorage.getItem("params");
-    console.log("token: ", token);*/
     const auth = useSelector(isLoggedIn);
     const loggedIn = auth.loggedIn;
     console.log("logged in: ", loggedIn);
@@ -37,9 +34,11 @@ export default function Home() {
                                 ur logged in woo
                             </div>
                         ) : (
-                                <Button variant="info" type="submit" onClick={handleLogin}>
-                                    Login to spotify
-                                </Button>
+                                <SpotifyAuth
+                                    redirectUri='http://localhost:3000/redirect'
+                                    clientID='164e3321d4714ea2b1d88976aeecb258'
+                                    scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+                                />
                             )}
                     </Col>
                 </Row>

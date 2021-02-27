@@ -5,6 +5,8 @@ import {Container, Row, Col} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuth, isLoggedIn } from '../redux/selectors';
 
 
 function Developer() {
@@ -50,6 +52,10 @@ function Developers() {
     const row = css`
         text-align: center;
     `;
+
+    const auth = useSelector(isLoggedIn);
+    const loggedIn = auth.loggedIn;
+    console.log("logged in: ", loggedIn);
 
     return (
         <>

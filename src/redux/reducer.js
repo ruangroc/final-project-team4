@@ -1,4 +1,3 @@
-import { initial } from 'lodash';
 import { combineReducers } from 'redux';
 import {
   LOG_IN,
