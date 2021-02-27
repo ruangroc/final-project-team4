@@ -6,7 +6,7 @@ import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
 import { useSelector } from 'react-redux';
-import { isLoggedIn } from '../redux/selectors';
+import { getAuth } from '../redux/selectors';
 
 // Spotify Auth package
 import { SpotifyAuth, Scopes } from 'react-spotify-auth'
@@ -17,7 +17,7 @@ function Developer() {
     const { url, path } = useRouteMatch();
     const [dev, setDev] = useState([]);
 
-    const auth = useSelector(isLoggedIn);
+    const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
     
     if(loggedIn) {
@@ -79,7 +79,7 @@ function Developers() {
         text-align: center;
     `;
 
-    const auth = useSelector(isLoggedIn);
+    const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
     console.log("logged in: ", loggedIn);
 

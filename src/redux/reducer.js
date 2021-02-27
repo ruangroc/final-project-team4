@@ -3,11 +3,11 @@ import {
   LOG_IN,
 } from './actions';
 
-const initialState = {
+const authInitialState = {
   loggedIn: false
 }
 
-function authReducer(state = initialState, action) {
+function authReducer(state = authInitialState, action) {
   switch(action.type) {
     case LOG_IN:
       console.log("action in reducer: ", action);
@@ -23,7 +23,7 @@ function authReducer(state = initialState, action) {
 }
 
 const rootReducer = combineReducers({
-  loggedIn: authReducer,
+  auth: authReducer,
   // add more reducers here
 })
 

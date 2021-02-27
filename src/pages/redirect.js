@@ -27,6 +27,7 @@ function Redirect() {
       const logInAction = logIn(access_token);
       dispatch(logInAction);
 
+      localStorage.setItem('params', JSON.stringify(access_token));
       history.push('/');
     } catch (error) {
       history.push('/');
