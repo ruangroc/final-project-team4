@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card} from 'react-bootstrap';
+import {Container, Row, Col, Card, Button} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
@@ -11,22 +11,55 @@ function Developer() {
     const {developer} = useParams();
     const { url, path } = useRouteMatch();
     const [dev, setDev] = useState([]);
+    const [imageSrc, setImageSrc] =  useState("");
+    const [devPlaylists, setDevPlaylists] = useState([]);
+
+    const styles = css`
+        .image {
+            width: 350px;
+            height: 300px;
+        }
+        .card {
+            width: 350px;
+            height: 100%;
+            background-color: #3BE378;
+        }
+        a {
+            color: black;
+        }
+        ul {
+            list-style: none;
+        }
+        .sidebar {
+            position: absolute;
+            left: 0;
+        }
+    `;
     
-    if(developer == "thuyvy"){
-        fetchspotifyuser("tweetynguy");
-    }else if(developer == "kristina"){
-        fetchspotifyuser("kxlee14");
-    }else if(developer == "anita"){
-        fetchspotifyuser("anitasmith98");
-    }else{
-        return <Redirect to="/error" />
-    }
+    useEffect(() => {
+        if(developer === "thuyvy"){
+            fetchspotifyuser("tweetynguy");
+            fetchPlaylists("tweetynguy");
+            setImageSrc("http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg");
+        }else if(developer === "kristina"){
+            fetchspotifyuser("kxlee14");
+            fetchPlaylists("kxlee14");
+            setImageSrc("https://i.imgur.com/xPy88y5.png");
+        }else if(developer === "anita"){
+            fetchspotifyuser("anitasmith98");
+            fetchPlaylists("anitasmith98");
+            setImageSrc("http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg");
+        }else{
+            return <Redirect to="/error" />
+        }
+    }, [developer]);
+    
 
     async function fetchspotifyuser(user){
         try{
             const url = `https://api.spotify.com/v1/users/${user}`;
             const result = await get(url);
-            console.log(result);
+            console.log("fetch spotify user result:", result);
             setDev(result || []);
         } catch (e){
             if ( e instanceof DOMException){
@@ -35,10 +68,51 @@ function Developer() {
         }
     }
 
+    async function fetchPlaylists(user){
+        try{
+            const url = `https://api.spotify.com/v1/users/${user}/playlists`;
+            const result = await get(url);
+            console.log("fetch spotify user playlists:", result);
+            setDevPlaylists(result.items || {});
+        } catch (e){
+            if ( e instanceof DOMException){
+                console.log("HTTP Request Aborted")
+            }
+        }
+    }
+
+    // could make each item a button that will link to the spotify web player's playlist
+    function displayPlaylists() {
+        return devPlaylists.map(item => {
+            return (<Card>{item.name}</Card>);
+        });
+    }
+
     return (
-      <div>
-        <h2> {dev.display_name} </h2>
-      </div>
+        <Container fluid css={styles}>
+            <Row>
+                <Col className="sidebar">
+                    <Row><Button><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
+                    <Row><Button><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
+                    <Row><Button><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
+                </Col>
+                <Col>
+                    <Row>
+                        <Col xs={3}>
+                            {dev !== [] &&
+                            (<Card>
+                                <Card.Title> {dev.display_name} </Card.Title>
+                                <Card.Img src={imageSrc} className="card" />
+                                {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
+                            </Card>)}
+                        </Col>
+                        <Col xs={9}>
+                            {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        </Container>
     );
   }
 
@@ -88,19 +162,19 @@ function Developers() {
                         <Col>
                             <Card className="row">
                                 <Card.Img className="image" src="http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg" />
-                                <Card.Text><Link to="/developers/anita"> <h2> Anita</h2> </Link></Card.Text>
+                                <Link to="/developers/anita"> <h2> Anita</h2> </Link>
                             </Card>  
                         </Col>
                         <Col>
                             <Card className="row">
                                 <Card.Img className="image" src="https://i.imgur.com/xPy88y5.png" />
-                                <Card.Text><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Card.Text>
+                                <Link to="/developers/kristina"> <h2>Kristina</h2> </Link>
                             </Card>
                         </Col>
                         <Col>
                             <Card className="row">
                                 <Card.Img className="image" src="http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg" />
-                                <Card.Text><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Card.Text>
+                                <Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link>
                             </Card>
                         </Col>
                     </Row>
