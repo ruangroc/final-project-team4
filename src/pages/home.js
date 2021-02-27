@@ -34,11 +34,14 @@ export default function Home() {
                                 ur logged in woo
                             </div>
                         ) : (
-                                <SpotifyAuth
-                                    redirectUri='http://localhost:3000/redirect'
-                                    clientID='164e3321d4714ea2b1d88976aeecb258'
-                                    scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
-                                />
+                                <div>
+                                    <h5>Please login:</h5>
+                                    <SpotifyAuth
+                                        redirectUri='http://localhost:3000/redirect'
+                                        clientID='164e3321d4714ea2b1d88976aeecb258'
+                                        scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+                                    />
+                                </div>
                             )}
                     </Col>
                 </Row>
