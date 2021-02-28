@@ -5,7 +5,12 @@ import {Container, Row, Col, Card, Button} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
+import { useSelector } from 'react-redux';
+import { getAuth } from '../redux/selectors';
 
+// Spotify Auth package
+import { SpotifyAuth, Scopes } from 'react-spotify-auth'
+import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 function Developer() {
     const {developer} = useParams();
@@ -36,25 +41,30 @@ function Developer() {
         }
     `;
     
-    useEffect(() => {
-        if(developer === "thuyvy"){
+    const auth = useSelector(getAuth);
+    const loggedIn = auth.loggedIn;
+    
+    if(loggedIn) {
+        if (developer == "thuyvy") {
             fetchspotifyuser("tweetynguy");
             fetchPlaylists("tweetynguy");
             setImageSrc("http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg");
-        }else if(developer === "kristina"){
+        } else if (developer == "kristina") {
             fetchspotifyuser("kxlee14");
             fetchPlaylists("kxlee14");
             setImageSrc("https://i.imgur.com/xPy88y5.png");
-        }else if(developer === "anita"){
+        } else if (developer == "anita") {
             fetchspotifyuser("anitasmith98");
             fetchPlaylists("anitasmith98");
             setImageSrc("http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg");
-        }else{
+        } else {
             return <Redirect to="/error" />
         }
-    }, [developer]);
+    }
+    else {
+        console.log("not logged in!");
+    }
     
-
     async function fetchspotifyuser(user){
         try{
             const url = `https://api.spotify.com/v1/users/${user}`;
@@ -89,6 +99,7 @@ function Developer() {
     }
 
     return (
+<<<<<<< HEAD
         <Container fluid css={styles}>
             <Row>
                 <Col className="sidebar">
@@ -113,6 +124,26 @@ function Developer() {
                 </Col>
             </Row>
         </Container>
+=======
+      <div>
+        <h2> {dev.display_name} </h2>
+        {loggedIn ? (
+            <div>
+                logged in!
+            </div>
+        ) : (
+                <div>
+                    <h5>Please login to use this feature!</h5>
+                    <SpotifyAuth
+                        redirectUri='http://localhost:3000/redirect'
+                        clientID='164e3321d4714ea2b1d88976aeecb258'
+                        scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+                    />
+                </div>
+            )}
+        
+      </div>
+>>>>>>> master
     );
   }
 
@@ -143,6 +174,10 @@ function Developers() {
             color: black;
         }
     `;
+
+    const auth = useSelector(getAuth);
+    const loggedIn = auth.loggedIn;
+    console.log("logged in: ", loggedIn);
 
     return (
         <>

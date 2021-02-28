@@ -1,25 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import { getParamValues } from '../utils/functions';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/actions';
+import Cookies from 'js-cookie';
 
-export default class Redirect extends React.Component {
-  componentDidMount() {
-    const { setExpiryTime, history, location } = this.props;
+function Redirect() {
+  let location = useLocation();
+  let history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
     try {
       if (_.isEmpty(location.hash)) {
         return history.push('/dashboard');
       }
       const access_token = getParamValues(location.hash);
       console.log(access_token);
-      const expiryTime = new Date().getTime() + access_token.expires_in * 1000;
+      
+      // set Spotify cookie
+      const expiryTime = new Date(new Date().getTime() + access_token.expires_in * 1000);
+      Cookies.set('spotifyAuthToken', access_token, { expires: expiryTime });
+
+      // change state to loggedIn
+      const logInAction = logIn(access_token);
+      dispatch(logInAction);
+
       localStorage.setItem('params', JSON.stringify(access_token));
-      localStorage.setItem('expiry_time', expiryTime);
       history.push('/');
     } catch (error) {
       history.push('/');
     }
-  }
-  render() {
-    return null;
-  }
+  });
+
+  return(
+    <>
+    </>
+  );
 }
+
+export default Redirect;
