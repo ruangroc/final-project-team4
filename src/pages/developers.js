@@ -98,53 +98,43 @@ function Developer() {
         });
     }
 
-    return (
-<<<<<<< HEAD
-        <Container fluid css={styles}>
-            <Row>
-                <Col className="sidebar">
-                    <Row><Button><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
-                    <Row><Button><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
-                    <Row><Button><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
-                </Col>
-                <Col>
-                    <Row>
-                        <Col xs={3}>
-                            {dev !== [] &&
-                            (<Card>
-                                <Card.Title> {dev.display_name} </Card.Title>
-                                <Card.Img src={imageSrc} className="card" />
-                                {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
-                            </Card>)}
-                        </Col>
-                        <Col xs={9}>
-                            {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-        </Container>
-=======
-      <div>
-        <h2> {dev.display_name} </h2>
-        {loggedIn ? (
-            <div>
-                logged in!
-            </div>
-        ) : (
-                <div>
-                    <h5>Please login to use this feature!</h5>
-                    <SpotifyAuth
-                        redirectUri='http://localhost:3000/redirect'
-                        clientID='164e3321d4714ea2b1d88976aeecb258'
-                        scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
-                    />
-                </div>
-            )}
-        
-      </div>
->>>>>>> master
-    );
+    return (<>
+        {loggedIn ? 
+            (<Container fluid css={styles}>
+                <Row>
+                    <Col className="sidebar">
+                        <Row><Button><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
+                        <Row><Button><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
+                        <Row><Button><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
+                    </Col>
+                    <Col>
+                        <Row>
+                            <Col xs={3}>
+                                {dev !== [] &&
+                                (<Card>
+                                    <Card.Title> {dev.display_name} </Card.Title>
+                                    <Card.Img src={imageSrc} className="card" />
+                                    {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
+                                </Card>)}
+                            </Col>
+                            <Col xs={9}>
+                                {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>) 
+            : 
+            (<div>
+                <h5>Please login to use this feature!</h5>
+                <SpotifyAuth
+                    redirectUri='http://localhost:3000/redirect'
+                    clientID='164e3321d4714ea2b1d88976aeecb258'
+                    scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+                />
+            </div>)
+        }
+    </>);
   }
 
 
