@@ -38,6 +38,11 @@ function Developer() {
         .sidebar {
             position: absolute;
             left: 0;
+            padding: 1%;
+        }
+        .side-button {
+            background-color: #3BE378;
+            border: none;
         }
     `;
     
@@ -49,15 +54,15 @@ function Developer() {
         if(loggedIn) {
             if (developer == "thuyvy") {
                 fetchspotifyuser("tweetynguy");
-                // fetchPlaylists("tweetynguy");
+                fetchPlaylists("tweetynguy");
                 setImageSrc("http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg");
             } else if (developer == "kristina") {
                 fetchspotifyuser("kxlee14");
-                // fetchPlaylists("kxlee14");
+                fetchPlaylists("kxlee14");
                 setImageSrc("https://i.imgur.com/xPy88y5.png");
             } else if (developer == "anita") {
                 fetchspotifyuser("anitasmith98");
-                // fetchPlaylists("anitasmith98");
+                fetchPlaylists("anitasmith98");
                 setImageSrc("http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg");
             } else {
                 return <Redirect to="/error" />
@@ -72,7 +77,7 @@ function Developer() {
     async function fetchspotifyuser(user){
         try{
             const url = `https://api.spotify.com/v1/users/${user}`;
-            const result = await get(url);
+            const result = await get(url, { access_token: auth.accessToken });
             console.log("fetch spotify user result:", result);
             setDev(result || []);
         } catch (e){
@@ -86,7 +91,7 @@ function Developer() {
     async function fetchPlaylists(user){
         try{
             const url = `https://api.spotify.com/v1/users/${user}/playlists`;
-            const result = await get(url);
+            const result = await get(url, { access_token: auth.accessToken });
             console.log("fetch spotify user playlists:", result);
             setDevPlaylists(result.items || []);
         } catch (e){
@@ -100,7 +105,7 @@ function Developer() {
     // could make each item a button that will link to the spotify web player's playlist
     function displayPlaylists() {
         return devPlaylists.map(item => {
-            return (<Card>{item.name}</Card>);
+            return (<Card key={item.name}>{item.name}</Card>);
         });
     }
 
@@ -109,9 +114,9 @@ function Developer() {
             (<Container fluid css={styles}>
                 <Row>
                     <Col className="sidebar">
-                        <Row><Button><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
-                        <Row><Button><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
-                        <Row><Button><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
+                        <Row><Button className="side-button"><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
+                        <Row><Button className="side-button"><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
+                        <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
                     </Col>
                     <Col>
                         <Row>

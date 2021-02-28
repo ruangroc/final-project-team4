@@ -9,10 +9,9 @@ export const getParamValues = (url) => {
       return prev;
     }, {});
 };
-export const setAuthHeader = () => {
+export const setAuthHeader = (params) => {
   try {
-    const params = JSON.parse(localStorage.getItem('params'));
-    console.log("localStorage params:", params);
+    console.log("setAuthHeader params:", params);
     if (params) {
       axios.defaults.headers.common[
         'Authorization'
