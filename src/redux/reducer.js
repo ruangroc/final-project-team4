@@ -13,7 +13,7 @@ function authReducer(state = authInitialState, action) {
       console.log("action in reducer: ", action);
       return {
         ...state,
-        accessToken: action.accessToken.access_token,
+        accessToken: JSON.parse(action.accessToken).access_token,
         loggedIn: true,
       };
       

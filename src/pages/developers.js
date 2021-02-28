@@ -44,26 +44,30 @@ function Developer() {
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
     
-    if(loggedIn) {
-        if (developer == "thuyvy") {
-            fetchspotifyuser("tweetynguy");
-            fetchPlaylists("tweetynguy");
-            setImageSrc("http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg");
-        } else if (developer == "kristina") {
-            fetchspotifyuser("kxlee14");
-            fetchPlaylists("kxlee14");
-            setImageSrc("https://i.imgur.com/xPy88y5.png");
-        } else if (developer == "anita") {
-            fetchspotifyuser("anitasmith98");
-            fetchPlaylists("anitasmith98");
-            setImageSrc("http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg");
-        } else {
-            return <Redirect to="/error" />
+    useEffect(() => {
+        console.log("redux auth access token:", auth.accessToken);
+        if(loggedIn) {
+            if (developer == "thuyvy") {
+                fetchspotifyuser("tweetynguy");
+                // fetchPlaylists("tweetynguy");
+                setImageSrc("http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg");
+            } else if (developer == "kristina") {
+                fetchspotifyuser("kxlee14");
+                // fetchPlaylists("kxlee14");
+                setImageSrc("https://i.imgur.com/xPy88y5.png");
+            } else if (developer == "anita") {
+                fetchspotifyuser("anitasmith98");
+                // fetchPlaylists("anitasmith98");
+                setImageSrc("http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg");
+            } else {
+                return <Redirect to="/error" />
+            }
         }
-    }
-    else {
-        console.log("not logged in!");
-    }
+        else {
+            console.log("not logged in!");
+        }
+    }, [developer]);
+    
     
     async function fetchspotifyuser(user){
         try{
@@ -73,8 +77,9 @@ function Developer() {
             setDev(result || []);
         } catch (e){
             if ( e instanceof DOMException){
-                console.log("HTTP Request Aborted")
+                console.log("HTTP Request Aborted");
             }
+            console.log("error fetching user", e);
         }
     }
 
@@ -83,11 +88,12 @@ function Developer() {
             const url = `https://api.spotify.com/v1/users/${user}/playlists`;
             const result = await get(url);
             console.log("fetch spotify user playlists:", result);
-            setDevPlaylists(result.items || {});
+            setDevPlaylists(result.items || []);
         } catch (e){
             if ( e instanceof DOMException){
                 console.log("HTTP Request Aborted")
             }
+            console.log("error fetching playlists", e);
         }
     }
 
