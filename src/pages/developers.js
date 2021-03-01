@@ -134,7 +134,7 @@ function Developer() {
                         {dev !== [] &&
                         (<Card className="dev-card">
                             <Card.Title> {dev.display_name} </Card.Title>
-                            <Card.Img src={dev.images ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
+                            <Card.Img src={(dev.images && dev.images.length) ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
                             other info here
                         </Card>)}
