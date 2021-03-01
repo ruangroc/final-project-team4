@@ -110,7 +110,6 @@ function Developer() {
         }
     }
 
-    // could make each item a button that will link to the spotify web player's playlist
     function displayPlaylists() {
         console.log("playlists:", devPlaylists);
         return devPlaylists.map(item => {
