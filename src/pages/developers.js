@@ -18,30 +18,30 @@ function Developer() {
     const [dev, setDev] = useState([]);
     const [imageSrc, setImageSrc] =  useState({
         "thuyvy": "http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg",
-        "kristina": "https://i.imgur.com/xPy88y5.png",
+        "kristina": "https://ih0.redbubble.net/image.60088184.6145/flat,1000x1000,075,f.u2.jpg",
         "anita": "http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg"
     });
     const [devPlaylists, setDevPlaylists] = useState([]);
 
     const styles = css`
-        .image {
-            width: 200px;
-            height: 200px;
-        }
+        // .image {
+        //     width: 200px;
+        //     height: 200px;
+        // }
         .card {
-            width: 200px;
-            height: 250px;
+            width: 15%;
+            height: 15%;
             background-color: #3BE378;
             margin: 10px;
         }
         .dev-image {
-            width: 350px;
-            height: 300px;
+            width: 100%;
+            height: 100%;
         }
         .dev-card {
-            width: 350px;
-            height: 375px;
             background-color: #3BE378;
+            width: 100%;
+            height: 100%;
         }
         a {
             color: black;
@@ -111,7 +111,6 @@ function Developer() {
     }
 
     function displayPlaylists() {
-        console.log("playlists:", devPlaylists);
         return devPlaylists.map(item => {
             return (
                 <Card key={item.name}>
@@ -125,22 +124,25 @@ function Developer() {
     return (<>
         {loggedIn ? 
             (<Row css={styles}>
-                <Col xs={1} className="sidebar">
-                    <Row><Button className="side-button"><Link to="/developers/anita"> <h2> Anita</h2> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Button></Row>
+                <Col lg={1} xs={6} className="sidebar">
+                    <Row><Button className="side-button"><Link to="/developers/anita"> <h3> Anita</h3> </Link></Button></Row>
+                    <Row><Button className="side-button"><Link to="/developers/kristina"> <h3>Kristina</h3> </Link></Button></Row>
+                    <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h3> ThuyVy</h3> </Link></Button></Row>
                 </Col>
-                <Col xs={11}>
+                <Col lg={2} xs={6}>
                     <Row>
-                        <Col lg={3}>
-                            {dev !== [] &&
-                            (<Card className="dev-card">
-                                <Card.Title> {dev.display_name} </Card.Title>
-                                <Card.Img src={imageSrc[developer]} className="dev-image" />
-                                {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
-                            </Card>)}
-                        </Col>
-                        <Col lg={9}>
+                        {dev !== [] &&
+                        (<Card className="dev-card">
+                            <Card.Title> {dev.display_name} </Card.Title>
+                            <Card.Img src={dev.images ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
+                            {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
+                            other info here
+                        </Card>)}
+                    </Row>
+                </Col>
+                <Col lg={9} xs={12}>
+                    <Row>
+                        <Col>
                             <h3>{dev.display_name}'s Playlists</h3>
                             {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
                         </Col>
@@ -164,6 +166,11 @@ function Developer() {
 function Developers() {
     const match = useRouteMatch();
     const { url, path } = match;
+    const imageSrc =  {
+        "thuyvy": "http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg",
+        "kristina": "https://ih0.redbubble.net/image.60088184.6145/flat,1000x1000,075,f.u2.jpg",
+        "anita": "http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg"
+    };
 
     const styles = css`
         .row {
@@ -172,13 +179,8 @@ function Developers() {
             margin-bottom: 1%;
         }
 
-        .image {
-            width: 350px;
-            height: 300px;
-        }
-
         .card {
-            width: 350px;
+            width: 100%;
             height: 100%;
             background-color: #3BE378;
         }
@@ -212,19 +214,19 @@ function Developers() {
                         <Row className="row">
                             <Col>
                                 <Card className="row">
-                                    <Card.Img className="image" src="http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg" />
+                                    <Card.Img className="image" src={imageSrc['anita']} />
                                     <Link to="/developers/anita"> <h2> Anita</h2> </Link>
                                 </Card>  
                             </Col>
                             <Col>
                                 <Card className="row">
-                                    <Card.Img className="image" src="https://i.imgur.com/xPy88y5.png" />
+                                    <Card.Img className="image" src={imageSrc['kristina']} />
                                     <Link to="/developers/kristina"> <h2>Kristina</h2> </Link>
                                 </Card>
                             </Col>
                             <Col>
                                 <Card className="row">
-                                    <Card.Img className="image" src="http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg" />
+                                    <Card.Img className="image" src={imageSrc['thuyvy']} />
                                     <Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link>
                                 </Card>
                             </Col>
