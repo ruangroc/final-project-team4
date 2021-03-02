@@ -56,8 +56,9 @@ function Developer() {
         .side-button {
             background-color: #3BE378;
             border: none;
-            width: 100%;
+            width: 90%;
             text-align: left;
+            margin: 1%;
         }
     `;
     
