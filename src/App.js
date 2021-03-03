@@ -11,7 +11,7 @@ import Home from "./pages/home";
 import Developers from "./pages/developers";
 import Error from "./pages/error";
 import ComhinePlaylists from "./pages/combineplaylists";
-import CollabPlaylist from "./pages/collabplaylist";
+import UserStats from "./pages/userstats";
 import Redirect from "./pages/redirect";
 
 
@@ -32,7 +32,7 @@ function App() {
     <Switch>
       <Route path="/developers" component={Developers} />
       <Route path="/combineplaylists" component={ComhinePlaylists} />
-      <Route path="/collabplaylist" component={CollabPlaylist} />
+      <Route path="/userstats" component={UserStats} />
       <Route path="/redirect" component={Redirect} />
 
       <Route exact path="/" component={Home} />
