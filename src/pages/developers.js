@@ -63,13 +63,13 @@ function Developer() {
     
     useEffect(() => {
         if(loggedIn) {
-            if (developer == "thuyvy") {
+            if (developer === "thuyvy") {
                 fetchspotifyuser("tweetynguy");
                 fetchPlaylists("tweetynguy");
-            } else if (developer == "kristina") {
+            } else if (developer === "kristina") {
                 fetchspotifyuser("kxlee14");
                 fetchPlaylists("kxlee14");
-            } else if (developer == "anita") {
+            } else if (developer === "anita") {
                 fetchspotifyuser("anitasmith98");
                 fetchPlaylists("anitasmith98");
             } else {
