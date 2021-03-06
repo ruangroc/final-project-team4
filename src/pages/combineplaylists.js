@@ -208,16 +208,6 @@ function CombinePlaylists() {
         margin-top: 1%;
         margin-bottom: 1%;
     }
-
-    .card {
-        width: 100%;
-        height: 100%;
-        background-color: #3BE378;
-    }
-
-    a {
-        color: black;
-    }
 `;
 
     return (
@@ -234,36 +224,38 @@ function CombinePlaylists() {
                         <>
                         <Row>
                             <Col>
-                            <h3>Merge all songs from playlist 2 into playlist 1 </h3>
+                            <h3>Merge all songs from playlist 1 into playlist 2 </h3>
                             </Col>
                         </Row>
                         <hr></hr>
                         <Row>
                             <Col>
                             <h2> Playlist 1</h2>
-                            <Dropdown
-                                options={playlists.playlistList}
-                                value={playlists.selectedPlaylist1}
-                                change={changePlaylist1}
-                            />
-                            </Col>
-                            <Col>
-                            <h1> ADD ARROW HERE </h1>
-                            
-                            </Col>
-                            <Col>
-                            <h2> Playlist 2</h2>
                             <Dropdown 
                                 options={playlists.playlistList}
                                 value={playlists.selectedPlaylist2}
                                 change={changePlaylist2}
                             />
                             </Col>
+                            <Col>
+                             <img src="arrow.png" height = "80px" />
+                            
+                            </Col>
+                            <Col>
+                            <h2> Playlist 2</h2>
+                            <Dropdown
+                                options={playlists.playlistList}
+                                value={playlists.selectedPlaylist1}
+                                change={changePlaylist1}
+                            />
+                            </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Button variant="outline-success" onClick={combinePlaylists}>
-                                    Combine!
+                            <br></br>
+                            <br></br>
+                                <Button variant="success" onClick={combinePlaylists}>
+                                    <h2> Combine! </h2>
                                 </Button>
                             </Col>
                         </Row>
