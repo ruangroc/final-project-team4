@@ -24,10 +24,6 @@ function Developer() {
     const [devPlaylists, setDevPlaylists] = useState([]);
 
     const styles = css`
-        // .image {
-        //     width: 200px;
-        //     height: 200px;
-        // }
         .card {
             width: 15%;
             height: 15%;
@@ -51,10 +47,18 @@ function Developer() {
         }
         .sidebar {
             padding: 1%;
+            margin-right: 1%;
+        }
+        .sidebar-header {
+            text-align: left;
+            width: 100%;
         }
         .side-button {
             background-color: #3BE378;
             border: none;
+            width: 90%;
+            text-align: left;
+            margin: 1%;
         }
     `;
     
@@ -115,7 +119,7 @@ function Developer() {
             return (
                 <Card key={item.name}>
                     <Card.Title> <a href={`https://open.spotify.com/playlist/${item.id}`} target="_blank">{item.name}</a> </Card.Title>
-                    <Card.Img src={item.images.length ? item.images[0].url : "https://img.talkandroid.com/uploads/2016/01/spotify-app-logo-450x450.png"} className="image" />
+                    <Card.Img src={item.images.length ? item.images[0].url : "https://img.talkandroid.com/uploads/2016/01/spotify-app-logo-450x450.png"} />
                 </Card>
             );
         });
@@ -124,10 +128,11 @@ function Developer() {
     return (<>
         {loggedIn ? 
             (<Row css={styles}>
-                <Col lg={1} xs={6} className="sidebar">
-                    <Row><Button className="side-button"><Link to="/developers/anita"> <h3> Anita</h3> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/kristina"> <h3>Kristina</h3> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h3> ThuyVy</h3> </Link></Button></Row>
+                <Col lg={1} xs={5} className="sidebar">
+                    <Row className="sidebar-header"><h3> Meet the Developers </h3></Row>
+                    <Row><Button className="side-button"><Link to="/developers/anita"> <h4> Anita</h4> </Link></Button></Row>
+                    <Row><Button className="side-button"><Link to="/developers/kristina"> <h4>Kristina</h4> </Link></Button></Row>
+                    <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h4> ThuyVy</h4> </Link></Button></Row>
                 </Col>
                 <Col lg={2} xs={6}>
                     <Row>
@@ -140,7 +145,7 @@ function Developer() {
                         </Card>)}
                     </Row>
                 </Col>
-                <Col lg={9} xs={12}>
+                <Col lg={8} xs={12}>
                     <Row>
                         <Col>
                             <h3>{dev.display_name}'s Playlists</h3>
@@ -173,20 +178,24 @@ function Developers() {
     };
 
     const styles = css`
-        .row {
+        .header {
             text-align: center;
             margin-top: 1%;
-            margin-bottom: 1%;
+            margin-bottom: 2%;
         }
-
         .card {
             width: 100%;
             height: 100%;
             background-color: #3BE378;
+            text-align: center;
+            margin: 1%;
         }
-
         a {
             color: black;
+        }
+        .image {
+            width: 100%;
+            height: 80%;
         }
     `;
 
@@ -206,28 +215,28 @@ function Developers() {
                     <Row>
                     <Col></Col>
                     <Col xs={7}>
-                        <Row className="row">
+                        <Row>
                             <Col>
-                                <h1 className="row">Meet the Developers!</h1>
+                                <h1 className="header">Meet the Developers!</h1>
                             </Col>
                         </Row>
-                        <Row className="row">
+                        <Row>
                             <Col>
-                                <Card className="row">
+                                <Card className="card">
                                     <Card.Img className="image" src={imageSrc['anita']} />
-                                    <Link to="/developers/anita"> <h2> Anita</h2> </Link>
-                                </Card>  
+                                    <Card.Title><Link to="/developers/anita"> <h2> Anita</h2> </Link></Card.Title>
+                                </Card> 
                             </Col>
                             <Col>
-                                <Card className="row">
+                                <Card className="card">
                                     <Card.Img className="image" src={imageSrc['kristina']} />
-                                    <Link to="/developers/kristina"> <h2>Kristina</h2> </Link>
+                                    <Card.Title><Link to="/developers/kristina"> <h2>Kristina</h2> </Link></Card.Title>
                                 </Card>
                             </Col>
                             <Col>
-                                <Card className="row">
+                                <Card className="card">
                                     <Card.Img className="image" src={imageSrc['thuyvy']} />
-                                    <Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link>
+                                    <Card.Title><Link to="/developers/thuyvy"> <h2> ThuyVy</h2> </Link></Card.Title>
                                 </Card>
                             </Col>
                         </Row>
