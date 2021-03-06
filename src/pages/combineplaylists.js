@@ -66,7 +66,7 @@ function CombinePlaylists() {
      * @param {*} offsets : contain the offsets in which to start getting song data
      * @returns 
      */
-    async function callAllPromises(playlistId, offsets) {
+    async function getTracksPromises(playlistId, offsets) {
         let allSongs = [];
 
         const promises = offsets.map(async offset => {
@@ -84,8 +84,37 @@ function CombinePlaylists() {
     }
 
     /**
+     * Add missing songs into a playlist, with over 100 missing songs. Multiple API calls need to be made.
+     * @param {*} playlistId id of playlist we want to add songs into
+     * @param {*} allTracks contains all of the missing songs split into chunks of 100
+     */
+    async function addTracksPromises(playlistId, allTracks) {
+        
+        const promises = allTracks.map(async trackSubArr => {
+            const result = await addTracksToPlaylist(playlistId, trackSubArr);
+            return result;
+        });
+
+        const allPromises = await Promise.all(promises);
+        
+        var success = true;
+        allPromises.forEach((promise) => {
+            if(promise.status !== 201) {
+                success = false;
+            }
+        });
+
+        if(success) {
+            alert("Success! Missing songs from playlist 1 successfully added into playlist 2!")
+        }
+        else {
+            alert("Uh oh, something went wrong. Please try again.");
+        }
+    }
+
+    /**
      * Fetch all songs from a playlist. 
-     * If a playlist has more than 100 songs, calls callAllPromises where multiple calls to fetchPlaylistSongs need to be made since the Spotify API will only return 100 songs at a time.
+     * If a playlist has more than 100 songs, calls getTracksPromises where multiple calls to fetchPlaylistSongs need to be made since the Spotify API will only return 100 songs at a time.
      * @param {*} playlistId : id of the playlist to retrieve tracks from
      * @returns all songs from a playlist
      */
@@ -110,7 +139,7 @@ function CombinePlaylists() {
                     offsets.push(i * 100);
                 }
 
-                return callAllPromises(playlistId, offsets);
+                return getTracksPromises(playlistId, offsets);
             }
 
         } catch (e) {
@@ -136,13 +165,7 @@ function CombinePlaylists() {
         }
 
         const results = await post(url, { access_token: auth.accessToken });
-        console.log('Playlist combine POST results: ', results);
-        if(results.status === 201) {
-            alert("Missing songs from playlist 1 successfully added into playlist 2!");
-        }
-        else {
-            alert("Something went wrong, please try again!");
-        }
+        return results;
     }
 
     /**
@@ -179,7 +202,33 @@ function CombinePlaylists() {
             return;
         }
 
-        addTracksToPlaylist(playlists.selectedPlaylist1, missingSongs);
+        // handle API calls if missingSongs > 100
+        if(missingSongs.length > 100) {
+            const numCalls = Math.floor(missingSongs.length / 100);
+            var allMissingSongs = [];
+            for (var i = 0; i <= numCalls; i++) {
+                var start = i * 100;
+                var end = start + 100;
+                if (missingSongs.length < end) {
+                    end = missingSongs.length;
+                }
+                const newArr = missingSongs.slice(start, end);
+                allMissingSongs.push(newArr);
+            }
+            addTracksPromises(playlists.selectedPlaylist1, allMissingSongs);
+            return;
+        }
+
+        // else missing songs <= 100 we don't need to make extra API calls
+        else {
+            const results = await addTracksToPlaylist(playlists.selectedPlaylist1, missingSongs);
+            if (results.status) {
+                alert("Success! Missing songs from playlist 1 successfully added into playlist 2!")
+            }
+            else {
+                alert("Uh oh, something went wrong. Please try again.");
+            }
+        }
     }
 
     useEffect(() => {
