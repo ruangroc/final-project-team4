@@ -25,7 +25,7 @@ function CombinePlaylists() {
      */
     async function fetchMyPlaylists() {
         try {
-            const url = `https://api.spotify.com/v1/me/playlists`;
+            const url = `https://api.spotify.com/v1/me/playlists?limit=50`;
             const result = await get(url, { access_token: auth.accessToken });
             console.log("fetch my user playlists:", result);
             setPlaylists({
