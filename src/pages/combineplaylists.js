@@ -187,12 +187,16 @@ function CombinePlaylists() {
         let missingSongs = [];
 
         p1Tracks.forEach(song => {
-            p1TrackMap.set(song.track.uri, 1);
+            if(song !== undefined) {
+                p1TrackMap.set(song.track.uri, 1);
+            } 
         })
 
         p2Tracks.forEach(song => {
-            if(!p1TrackMap.has(song.track.uri)) {
-                missingSongs.push(song.track.uri);
+            if(song !== undefined) {
+                if (!p1TrackMap.has(song.track.uri)) {
+                    missingSongs.push(song.track.uri);
+                }
             }
         });
 
