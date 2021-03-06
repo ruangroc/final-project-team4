@@ -1,8 +1,8 @@
 /**@jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import { Container, Row, Col } from 'react-bootstrap';
-//import { css } from '@emotion/react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { css } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 import { get, post } from '../utils/api';
@@ -202,31 +202,76 @@ function CombinePlaylists() {
         });
     } 
 
+    const styles = css`
+    .row {
+        text-align: center;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+
+    .card {
+        width: 100%;
+        height: 100%;
+        background-color: #3BE378;
+    }
+
+    a {
+        color: black;
+    }
+`;
+
     return (
         <>
         <Navigation/>
-        <Container>
+        <Container fluid css={styles}>
             <Row>
                 <Col>
                     <h1> Combine your playlists!</h1>
+                </Col>
+            </Row>
+
                     {loggedIn ? (
                         <>
-                            <h3>Merge all songs from playlist 1 into playlist 2</h3>
+                        <Row>
+                            <Col>
+                            <h3>Merge all songs from playlist 2 into playlist 1 </h3>
+                            </Col>
+                        </Row>
+                        <hr></hr>
+                        <Row>
+                            <Col>
+                            <h2> Playlist 1</h2>
                             <Dropdown
                                 options={playlists.playlistList}
                                 value={playlists.selectedPlaylist1}
                                 change={changePlaylist1}
                             />
+                            </Col>
+                            <Col>
+                            <h1> ADD ARROW HERE </h1>
+                            
+                            </Col>
+                            <Col>
+                            <h2> Playlist 2</h2>
                             <Dropdown 
                                 options={playlists.playlistList}
                                 value={playlists.selectedPlaylist2}
                                 change={changePlaylist2}
                             />
-                            <button onClick={combinePlaylists}>
-                                Combine!
-                            </button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Button variant="outline-success" onClick={combinePlaylists}>
+                                    Combine!
+                                </Button>
+                            </Col>
+                        </Row>
                         </> 
                     ) : (
+                        <Row>
+                            <Col>
+
                             <div>
                                 <h5>Please login to use this feature!</h5>
                                 <SpotifyAuth
@@ -235,9 +280,9 @@ function CombinePlaylists() {
                                     scopes={scopes}
                                 />
                             </div>
+                            </Col>
+                        </Row>
                         )}
-                </Col>
-            </Row>
 
         </Container>
     </>
