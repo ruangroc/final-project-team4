@@ -18,7 +18,6 @@ function CombinePlaylists() {
 
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
-    const [songs, setSongs] = useState({ playlist1Songs: [], playlist2songs: [] });
     const [playlists, setPlaylists] = useState({ selectedPlaylist1: '', selectedPlaylist2: '', playlistList: [] });
 
     /**
@@ -146,11 +145,14 @@ function CombinePlaylists() {
         }
     }
 
+    /**
+     * Merge all missing songs from playlist 1 into playlist 2
+     */
     async function combinePlaylists() {
         
         // check if playlists are empty
         if (playlists.selectedPlaylist1 === undefined || playlists.selectedPlaylist2 === undefined) {
-            alert("please choose 2 playlists");
+            alert("Please choose 2 playlists.");
         }
 
         // fetch songs from playlists
