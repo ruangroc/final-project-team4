@@ -97,6 +97,12 @@ export default function UserStats() {
             90% { height: 9% }
             100% { height: 10% }
         }
+        @keyframes ear-animation {
+            0% { transform: rotate(-10deg) }
+            25% { transform: rotate(0deg) }
+            50% { transform: rotate(10deg) }
+            75% { transform: rotate(0deg) }
+            100% { transform: rotate(-10deg) }
     `;
 
     const [topArtists, setTopArtists] = useState({});
@@ -173,7 +179,7 @@ export default function UserStats() {
                 <Col lg={1} md={2} xs={3}>
                     <Card key={artist.uri} className="card">
                         <Card.Title>
-                            <Card.Img src={artist.images[2].url} />
+                            <Card.Img src={(artist.images && artist.images.length > 1 && artist.images[2]) ? artist.images[2].url : artist.images[0]} />
                             <a href={artist.external_urls.spotify} target="_blank">{artist.name}</a>
                         </Card.Title>
                     </Card>
@@ -203,20 +209,22 @@ export default function UserStats() {
     }
 
     // thinking of using average song duration for length of whiskers
-    // other audio features to make use of: acousticness, danceability, instrumentalness, speechiness, valence (positivity)
+    // other audio features to make use of: acousticness, instrumentalness, speechiness, valence (positivity)
     
     function average(array) {
         return array.reduce((a, b) => a + b) / array.length;
     }
 
     // background color ranges from 0.0 to 1.0, will correspond to energy (purple == highest energy)
-    // could later make this a gradient from lowest to highest energy colors
+    // now returning a gradient from lowest to average to highest energy colors
     function computeBackgroundColor() {
         const colors = ["#F94144", "#F8961E", "#F9C74F", "#55A630", "#00AFB9", "#0077B6", "#8E7DBE"];
         let energyArray = audioFeatures.map(item => item.energy);
-        let averageEnergy = average(energyArray);
-        let index = Math.round(6*averageEnergy);
-        return colors[index];
+        let averageIndex = Math.round(6*average(energyArray));
+        let lowestIndex = Math.round(6*Math.min(...energyArray));
+        let highestIndex = Math.round(6*Math.max(...energyArray));
+        let gradient = "linear-gradient(90deg, " + colors[lowestIndex] + ", " + colors[averageIndex] + ", " + colors[highestIndex] + ")";
+        return gradient;
     }
 
     // background opacity ranges from 0.0 to 1.0, loudness ranges from about -65 to 0 decibels, so 1.0 opacity == loud
@@ -235,16 +243,31 @@ export default function UserStats() {
     }
 
     // assumed bpm range of 0-200, will map to a 0-4 second interval
-    function computeAnimationSpeed() {
+    function computeTongueAnimationSpeed() {
         let tempoArray = audioFeatures.map(item => item.tempo);
         let averageTempo = average(tempoArray);
         return averageTempo * (4/200);
     }
 
+    // danceability ranges from 0 (least) to 1 (most), will map to a 0-4 second interval
+    function computeEarAnimationSpeed() {
+        let danceabilityArray = audioFeatures.map(item => item.danceability);
+        return Math.round(average(danceabilityArray) * 4);
+    }
+
+    // duration of songs will map to length of whiskers
+    function computeWhiskerLength() {
+        const lengths = ["50px", "60px", "70px", "80px", "90px", "100px"]
+        let durationArray = audioFeatures.map(item => item.duration_ms);
+        let averageDuration = Math.round(average(durationArray));
+        let index = averageDuration % 6;
+        return lengths[index];
+    }
+
     function displayCatVis() {
         if (audioFeatures.length) {
             const containerCss = {
-                backgroundColor:  computeBackgroundColor(),
+                background:  computeBackgroundColor(),
                 opacity: computeBackgroundOpacity()
             };
             const headCss = {
@@ -253,7 +276,7 @@ export default function UserStats() {
                 height: "200px",
                 margin: "1% auto",
                 backgroundColor: computeCatColor()
-            }
+            };
             const leftEarCss = {
                 width: 0,
                 height: 0, 
@@ -262,9 +285,10 @@ export default function UserStats() {
                 borderTop: "50px solid " + computeCatColor(),
                 position: "relative",
                 top: "-10%",
-                left: "-10%",
-                display: "inline-block"
-            }
+                left: "-5%",
+                display: "inline-block",
+                animation: "ear-animation infinite "+ computeEarAnimationSpeed() +"s both"
+            };
             const rightEarCss = {
                 width: 0,
                 height: 0, 
@@ -273,9 +297,10 @@ export default function UserStats() {
                 borderTop: "50px solid " + computeCatColor(),
                 position: "relative",
                 top: "-10%",
-                left: "50%",
-                display: "inline-block"
-            }
+                left: "45%",
+                display: "inline-block",
+                animation: "ear-animation infinite "+ computeEarAnimationSpeed() +"s both"
+            };
             const tongueCss = {
                 position: "relative", 
                 top: "35%",
@@ -285,8 +310,40 @@ export default function UserStats() {
                 backgroundColor: "#ffb4a2",
                 borderBottomLeftRadius: "30%",
                 borderBottomRightRadius: "30%",
-                animation: "tongue-animation infinite "+ computeAnimationSpeed() +"s both"
-            }
+                animation: "tongue-animation infinite "+ computeTongueAnimationSpeed() +"s both"
+            };
+            const whisker1 = {
+                backgroundColor: "black",
+                height: "2px",
+                width: computeWhiskerLength(),
+                position: "relative", 
+                top: "20%",
+                left: "-10%"
+            };
+            const whisker2 = {
+                backgroundColor: "black",
+                height: "2px",
+                width: computeWhiskerLength(),
+                position: "relative", 
+                top: "25%",
+                left: "-10%"
+            };
+            const whisker3 = {
+                backgroundColor: "black",
+                height: "2px",
+                width: computeWhiskerLength(),
+                position: "relative", 
+                top: "17%",
+                left: "80%"
+            };
+            const whisker4 = {
+                backgroundColor: "black",
+                height: "2px",
+                width: computeWhiskerLength(),
+                position: "relative", 
+                top: "22%",
+                left: "80%"
+            };
             return (
                 <div id="cat-container" style={containerCss}>
                     <div id="head" style={headCss}>
@@ -295,6 +352,12 @@ export default function UserStats() {
                         <div id="nose" />
                         <div id="left-ear" style={leftEarCss} />
                         <div id="right-ear" style={rightEarCss} />
+
+                        <div id="whisker1" style={whisker1} />
+                        <div id="whisker2" style={whisker2} />
+                        <div id="whisker3" style={whisker3} />
+                        <div id="whisker4" style={whisker4} />
+
                         <div id="tongue" style={tongueCss} />
                     </div>
                 </div>
