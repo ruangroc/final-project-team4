@@ -11,5 +11,5 @@ export const get = async (url, params) => {
 export const post = async (url, params) => {
   setAuthHeader(params);
   const result = await axios.post(url, params);
-  return result.data;
+  return result;
 };

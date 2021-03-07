@@ -1,5 +1,7 @@
 import Navigation from "../components/navbar";
+
 import {Container, Row, Col, Jumbotron, Button} from 'react-bootstrap';
+
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 import scopes from '../utils/scopes';

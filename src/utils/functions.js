@@ -11,7 +11,7 @@ export const getParamValues = (url) => {
 };
 export const setAuthHeader = (params) => {
   try {
-    console.log("setAuthHeader params:", params);
+    //console.log("setAuthHeader params:", params);
     if (params) {
       axios.defaults.headers.common[
         'Authorization'
