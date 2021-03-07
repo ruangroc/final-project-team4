@@ -25,14 +25,28 @@ export default function UserStats() {
         a {
             color: black;
         }
+        h4 {
+            margin: 1%;
+        }
+        h5 {
+            margin: 0 auto;
+        }
         .card {
             background-color: #3BE378;
             height: 100%;
+            width: 100%;
+            text-align: center;
+        }
+        #cat-container {
+            width: 100%;
+            height: 100%;
+            border: 2px solid black;
         }
     `;
 
     const [topArtists, setTopArtists] = useState({});
     const [topTracks, setTopTracks] = useState({});
+    const [audioFeatures, setAudioFeatures] = useState({});
 
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
@@ -40,7 +54,6 @@ export default function UserStats() {
     useEffect(() => {
         console.log("access token:", auth.accessToken);
         if (loggedIn) {
-            // fetchMyProfile();  // to test whether the api will work
             fetchTopArtists();
             fetchTopTracks();
         }
@@ -49,17 +62,22 @@ export default function UserStats() {
         }
     }, []);
 
-    async function fetchMyProfile() {
+    useEffect(() => {
+        if (topTracks !== {}) fetchAudioFeatures();
+    }, [topTracks]);
+
+    async function fetchAudioFeatures() {
         try{
-            const url = `https://api.spotify.com/v1/me`;
+            const trackIds = topTracks.items.map(song => song.id).join();
+            const url = `https://api.spotify.com/v1/audio-features?ids=${trackIds}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch my profile:", result);
-            setTopArtists(result || {});
+            console.log("fetch audio features:", result.audio_features);
+            setAudioFeatures(result.audio_features || {});
         } catch (e){
             if ( e instanceof DOMException){
                 console.log("HTTP Request Aborted");
             }
-            console.log("error fetching my profile", e);
+            console.log("error fetching audio features", e);
         }
     }
 
@@ -97,7 +115,7 @@ export default function UserStats() {
         }
         return topArtists.items.map(artist => {
             return (
-                <Col xs={1}>
+                <Col lg={1} md={2} xs={3}>
                     <Card key={artist.uri} className="card">
                         <Card.Title>
                             <Card.Img src={artist.images[2].url} />
@@ -115,15 +133,58 @@ export default function UserStats() {
         }
         return topTracks.items.map(song => {
             return (
-                <Col xs={1}>
-                    <Card key={song.uri} className="card">
-                        <Card.Title>
-                            <a href={song.external_urls.spotify} target="_blank">{song.name}</a>
-                        </Card.Title>
-                    </Card>
+                <Col lg={1} md={2} xs={3}>
+                    <Button key={song.uri} className="card">
+                        <h5><a href={song.external_urls.spotify} target="_blank">{song.name}</a></h5>
+                    </Button>
                 </Col>
             );
         });
+    }
+
+    // artists: popularity, genres
+    // tracks: popularity, duration (ms)
+    // audio features from a tracK: acousticness, danceability, duration (ms), energy, 
+    // instrumentalness, key, liveness, loudness, mode, speechiness, tempo (bpm), 
+    // time signature, valence (positivity)
+    // can make a single api call by passing comma separated list of track ids: https://developer.spotify.com/console/get-audio-features-track/
+
+    // background color: energy (purple - highest energy), ranges from 0.0 to 1.0
+    // background opacity: loudness (1 = loudest)
+    
+    function average(array) {
+        return array.reduce((a, b) => a + b) / array.length;
+    }
+
+    function computeBackgroundColor() {
+        const colors = ["#F94144", "#F8961E", "#F9C74F", "#55A630", "#00AFB9", "#0077B6", "#8E7DBE"];
+        let energyArray = audioFeatures.map(item => item.energy);
+        let averageEnergy = average(energyArray);
+        console.log("average:", averageEnergy);
+        let index = Math.round(6*averageEnergy);
+        return colors[index];
+    }
+
+    function computeBackgroundOpacity() {
+        let loudnessArray = audioFeatures.map(item => item.loudness);
+        let averageLoudness = average(loudnessArray);
+        console.log("average loudness:", averageLoudness);
+        let opacity = (averageLoudness + 65) * (1/65);
+        console.log("opacity:", opacity);
+        return opacity;
+    }
+
+    function displayCatVis() {
+        if (audioFeatures !== {}) {
+            const containerCss = {
+                backgroundColor:  computeBackgroundColor(),
+                opacity: computeBackgroundOpacity()
+            };
+            return (
+                <div id="cat-container" style={containerCss}>Cat</div>
+            );
+        }
+        return (<p>Loading cat visualization...</p>);
     }
 
     return (
@@ -138,7 +199,8 @@ export default function UserStats() {
             <Row>{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
             <Row><h4>Your Top 10 Artists</h4></Row>
             <Row>{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
-            <Row>Cool data visualizations</Row>
+            <Row><h4>Cat visualization created based on your top songs</h4></Row>
+            <Row>{displayCatVis()}</Row>
         </Container>) 
         : 
         (<div>
