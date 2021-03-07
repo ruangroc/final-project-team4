@@ -1,13 +1,12 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
 import {Container, Row, Col} from 'react-bootstrap';
-import {css} from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 import scopes from '../utils/scopes';
 
 // Spotify Auth package
-import { SpotifyAuth, Scopes } from 'react-spotify-auth'
+import { SpotifyAuth} from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 

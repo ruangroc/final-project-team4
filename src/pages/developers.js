@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Button, CardDeck} from 'react-bootstrap';
+import {Container, Row, Col, Card, Button} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
@@ -14,7 +14,6 @@ import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 function Developer() {
     const {developer} = useParams();
-    const { url, path } = useRouteMatch();
     const [dev, setDev] = useState([]);
     const [imageSrc, setImageSrc] =  useState({
         "thuyvy": "http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg",
@@ -51,26 +50,28 @@ function Developer() {
             width: 100%;
             height: 100%;
         }
-        a {
+        Cart.Title{
             color: black;
         }
+
+        .white {
+            color: white;
+            font-weight: bold;
+        }
+        
         ul {
             list-style: none;
-        }
-        .sidebar {
-            padding: 1%;
-            margin-right: 1%;
         }
         .sidebar-header {
             text-align: left;
             width: 100%;
+            margin-left: 2%;
         }
         .side-button {
-            background-color: #3BE378;
-            border: none;
             width: 90%;
             text-align: left;
-            margin: 1%;
+            margin-top: 5%;
+            margin-left: 5%;
         }
     `;
     
@@ -78,14 +79,15 @@ function Developer() {
     const loggedIn = auth.loggedIn;
     
     useEffect(() => {
+        console.log("HELLLO!!");
         if(loggedIn) {
-            if (developer == "thuyvy") {
+            if (developer === "thuyvy") {
                 fetchspotifyuser("tweetynguy");
                 fetchPlaylists("tweetynguy");
-            } else if (developer == "kristina") {
+            } else if (developer === "kristina") {
                 fetchspotifyuser("kxlee14");
                 fetchPlaylists("kxlee14");
-            } else if (developer == "anita") {
+            } else if (developer === "anita") {
                 fetchspotifyuser("anitasmith98");
                 fetchPlaylists("anitasmith98");
             } else {
@@ -127,9 +129,16 @@ function Developer() {
     }
 
     function displayPlaylists() {
+
+        const styles = css`
+            a {
+                color: black;
+            }
+        `;
+
         return devPlaylists.map(item => {
             return (
-                <Card key={item.name}>
+                <Card key={item.name} css={styles}>
                     <Card.Title> <a href={`https://open.spotify.com/playlist/${item.id}`} target="_blank">{item.name}</a> </Card.Title>
                     <Card.Img src={item.images.length ? item.images[0].url : "https://img.talkandroid.com/uploads/2016/01/spotify-app-logo-450x450.png"} />
                 </Card>
@@ -140,13 +149,14 @@ function Developer() {
     return (<>
         {loggedIn ? 
             (<Row css={styles}>
-                <Col lg={1} xs={5} className="sidebar">
-                    <Row className="sidebar-header"><h3> Meet the Developers </h3></Row>
-                    <Row><Button className="side-button"><Link to="/developers/anita"> <h4> Anita</h4> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/kristina"> <h4>Kristina</h4> </Link></Button></Row>
-                    <Row><Button className="side-button"><Link to="/developers/thuyvy"> <h4> ThuyVy</h4> </Link></Button></Row>
+                <Col lg={2} xs={5} className="sidebar">
+                    <br></br>
+                    <Row className="sidebar-header"><h4>Developers </h4></Row>
+                    <Row><Button  variant="secondary" href="/developers/anita" className="side-button"> <h6> Anita</h6> </Button></Row>
+                    <Row><Button  variant="secondary"  className="side-button" href = "/developers/kristina"> <h6>Kristina</h6> </Button></Row>
+                    <Row><Button  variant="secondary" className="side-button" href="/developers/thuyvy"> <h6> ThuyVy</h6> </Button></Row>
                 </Col>
-                <Col lg={2} xs={6}>
+                <Col lg={3} xs={6}>
                     <Row>
                         {dev !== [] &&
                         (<Card className="dev-card">
@@ -154,13 +164,13 @@ function Developer() {
                             <Card.Title> {dev.display_name} </Card.Title>
                             <Card.Img src={(dev.images && dev.images.length) ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
-                            <Card.Link href={githubSrc[developer]}> GitHub </Card.Link>
-                            <Card.Link href={linkedinSrc[developer]}> Linkedin </Card.Link>
+                            <Card.Link className="white" href={githubSrc[developer]}> GitHub </Card.Link>
+                            <Card.Link className="white" href={linkedinSrc[developer]}> Linkedin </Card.Link>
                             </Card.Body>
                         </Card>)}
                     </Row>
                 </Col>
-                <Col lg={8} xs={12}>
+                <Col lg={7} xs={12}>
                     <Row>
                         <Col>
                             <h3>{dev.display_name}'s Playlists</h3>
@@ -205,7 +215,7 @@ function Developers() {
             text-align: center;
             margin: 1%;
         }
-        a {
+        h2 {
             color: black;
         }
         .image {

@@ -1,9 +1,7 @@
 /**@jsxImportSource @emotion/react */
-import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Button, CardDeck} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 import {css} from '@emotion/react';
-import { get } from '../utils/api';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 
