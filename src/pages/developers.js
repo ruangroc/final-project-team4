@@ -7,6 +7,7 @@ import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router
 import { get } from '../utils/api';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
+import scopes from '../utils/scopes';
 
 // Spotify Auth package
 import { SpotifyAuth, Scopes } from 'react-spotify-auth'
@@ -160,7 +161,7 @@ function Developer() {
                 <SpotifyAuth
                     redirectUri='http://localhost:3000/redirect'
                     clientID='164e3321d4714ea2b1d88976aeecb258'
-                    scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+                    scopes={scopes}
                 />
             </div>)
         }
