@@ -8,7 +8,7 @@ import { getAuth } from '../redux/selectors';
 import scopes from '../utils/scopes';
 
 // Spotify Auth package
-import { SpotifyAuth, Scopes } from 'react-spotify-auth'
+import { SpotifyAuth } from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 function CollabPlaylist() {
