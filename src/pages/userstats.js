@@ -12,9 +12,8 @@ import scopes from '../utils/scopes';
 import { SpotifyAuth } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 
-// stretch goal: allow users to select short, medium, or long term stats
-// stretch goal: create a cat or landscape of cats based on song attributes (danceability, loudness, tempo, key)
-//      Could try to implement css or svg animations based on some variable as well
+// perhaps add ability to let users select if they want to see short, medium, or long term stats
+// also want to add on-hover tooltips or something to explain the cat visual
 
 // other data vis ideas
 // word cloud or bar chart of the most common genres (data from artists and tracks)
@@ -38,9 +37,50 @@ export default function UserStats() {
             text-align: center;
         }
         #cat-container {
-            width: 100%;
+            width: 50%;
             height: 100%;
             border: 2px solid black;
+            margin: auto;
+        }
+        #left-eye {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            position: relative;
+            top: 50%;
+            left: 20%;
+            background-color: black;
+            margin: 0px;
+            display: inline-block;
+        }
+        #right-eye {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            position: relative;
+            top: 50%;
+            left: 70%;
+            background-color: black;
+            margin: 0px;
+            display: inline-block;
+        }
+        #nose {
+            width: 0; 
+            height: 0; 
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid #000;
+            position: relative;
+            top: 60%;
+            left: 45%;
+        }
+        @keyframes tongue-animation {
+            0% { height: 0% }
+            20% { height: 2% }
+            40% { height: 4% }
+            50% { height: 6% }
+            80% { height: 8% }
+            100% { height: 10% }
         }
     `;
 
@@ -142,46 +182,102 @@ export default function UserStats() {
         });
     }
 
-    // artists: popularity, genres
-    // tracks: popularity, duration (ms)
-    // audio features from a tracK: acousticness, danceability, duration (ms), energy, 
-    // instrumentalness, key, liveness, loudness, mode, speechiness, tempo (bpm), 
-    // time signature, valence (positivity)
-    // can make a single api call by passing comma separated list of track ids: https://developer.spotify.com/console/get-audio-features-track/
-
-    // background color: energy (purple - highest energy), ranges from 0.0 to 1.0
-    // background opacity: loudness (1 = loudest)
+    // thinking of using average song duration for length of whiskers
+    // other audio features to make use of: acousticness, danceability, instrumentalness, speechiness, valence (positivity)
     
     function average(array) {
         return array.reduce((a, b) => a + b) / array.length;
     }
 
+    // background color ranges from 0.0 to 1.0, will correspond to energy (purple == highest energy)
+    // could later make this a gradient from lowest to highest energy colors
     function computeBackgroundColor() {
         const colors = ["#F94144", "#F8961E", "#F9C74F", "#55A630", "#00AFB9", "#0077B6", "#8E7DBE"];
         let energyArray = audioFeatures.map(item => item.energy);
         let averageEnergy = average(energyArray);
-        console.log("average:", averageEnergy);
         let index = Math.round(6*averageEnergy);
         return colors[index];
     }
 
+    // background opacity ranges from 0.0 to 1.0, loudness ranges from about -65 to 0 decibels, so 1.0 opacity == loud
     function computeBackgroundOpacity() {
         let loudnessArray = audioFeatures.map(item => item.loudness);
         let averageLoudness = average(loudnessArray);
-        console.log("average loudness:", averageLoudness);
-        let opacity = (averageLoudness + 65) * (1/65);
-        console.log("opacity:", opacity);
-        return opacity;
+        return (averageLoudness + 65) * (1/65);
+    }
+
+    // songs mostly in major key (1) = lighter color, songs mostly in minor key (0) = darker color
+    function computeCatColor() {
+        let modeArray = audioFeatures.map(item => item.mode);
+        let averageMode = average(modeArray);
+        if (Math.round(averageMode) === 1) return "#fefae0";
+        else return "#463f3a";
+    }
+
+    // assumed bpm range of 0-200, will map to a 0-5 second interval
+    function computeAnimationSpeed() {
+        let tempoArray = audioFeatures.map(item => item.tempo);
+        let averageTempo = average(tempoArray);
+        return averageTempo * (5/200);
     }
 
     function displayCatVis() {
-        if (audioFeatures !== {}) {
+        if (audioFeatures.length) {
             const containerCss = {
                 backgroundColor:  computeBackgroundColor(),
                 opacity: computeBackgroundOpacity()
             };
+            const headCss = {
+                borderRadius: "50%",
+                width: "200px",
+                height: "200px",
+                margin: "1% auto",
+                backgroundColor: computeCatColor()
+            }
+            const leftEarCss = {
+                width: 0,
+                height: 0, 
+                borderLeft: "30px solid transparent",
+                borderRight: "30px solid transparent",
+                borderTop: "50px solid " + computeCatColor(),
+                position: "relative",
+                top: "-10%",
+                left: "-10%",
+                display: "inline-block"
+            }
+            const rightEarCss = {
+                width: 0,
+                height: 0, 
+                borderLeft: "30px solid transparent",
+                borderRight: "30px solid transparent",
+                borderTop: "50px solid " + computeCatColor(),
+                position: "relative",
+                top: "-10%",
+                left: "50%",
+                display: "inline-block"
+            }
+            const tongueCss = {
+                position: "relative", 
+                top: "35%",
+                left: "50%",
+                width: "20px",
+                height: "20px",
+                backgroundColor: "#ffb4a2",
+                borderBottomLeftRadius: "30%",
+                borderBottomRightRadius: "30%",
+                animation: "tongue-animation infinite "+ computeAnimationSpeed() +"s both"
+            }
             return (
-                <div id="cat-container" style={containerCss}>Cat</div>
+                <div id="cat-container" style={containerCss}>
+                    <div id="head" style={headCss}>
+                        <div id="left-eye" />
+                        <div id="right-eye" />
+                        <div id="nose" />
+                        <div id="left-ear" style={leftEarCss} />
+                        <div id="right-ear" style={rightEarCss} />
+                        <div id="tongue" style={tongueCss} />
+                    </div>
+                </div>
             );
         }
         return (<p>Loading cat visualization...</p>);
