@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled/macro';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 import { get, post } from '../utils/api';
@@ -13,12 +14,19 @@ import Dropdown from '../components/Dropdown';
 import { SpotifyAuth } from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css' // if using the included styles
 
+const CombineSuccess = styled.div`
+    text-align: center;
+    background-color: #3BE378;
+    opacity: 0.8;
+    border: solid 1px darkgrey;
+`;
 
 function CombinePlaylists() {
 
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
-    const [playlists, setPlaylists] = useState({ selectedPlaylist1: '', selectedPlaylist2: '', playlistList: [] });
+    const [playlists, setPlaylists] = useState({ selectedPlaylist1: '', selectedPlaylist2: '', combinedPlaylistLink: '', playlistList: [] });
+    const [success, setSuccess] = useState(false);
 
     /**
      * Fetches playlists for the signed in user
@@ -105,7 +113,7 @@ function CombinePlaylists() {
         });
 
         if(success) {
-            alert("Success! Missing songs from playlist 1 successfully added into playlist 2!")
+            onCombineSuccess();
         }
         else {
             alert("Uh oh, something went wrong. Please try again.");
@@ -168,6 +176,22 @@ function CombinePlaylists() {
         return results;
     }
 
+    function onCombineSuccess() {
+        
+        // get external link for playlist 1
+        playlists.playlistList.forEach(playlist => {
+            if (playlist.id === playlists.selectedPlaylist1) {
+                setPlaylists({
+                    ...playlists,
+                    combinedPlaylistLink: playlist.external_urls.spotify
+                });
+            }
+        })
+
+        // show success popup
+        setSuccess(true);
+    }
+
     /**
      * Merge all missing songs from playlist 1 into playlist 2
      */
@@ -187,13 +211,13 @@ function CombinePlaylists() {
         let missingSongs = [];
 
         p1Tracks.forEach(song => {
-            if(song !== undefined) {
+            if(song !== null) {
                 p1TrackMap.set(song.track.uri, 1);
             } 
         })
 
         p2Tracks.forEach(song => {
-            if(song !== undefined) {
+            if(song !== null) {
                 if (!p1TrackMap.has(song.track.uri)) {
                     missingSongs.push(song.track.uri);
                 }
@@ -227,7 +251,7 @@ function CombinePlaylists() {
         else {
             const results = await addTracksToPlaylist(playlists.selectedPlaylist1, missingSongs);
             if (results.status) {
-                alert("Success! Missing songs from playlist 1 successfully added into playlist 2!")
+                onCombineSuccess();
             }
             else {
                 alert("Uh oh, something went wrong. Please try again.");
@@ -241,7 +265,11 @@ function CombinePlaylists() {
         }
     }, [loggedIn]);
 
-    const changePlaylist1 = e => {
+    useEffect(() => {
+        setSuccess(false);
+    }, [playlists.selectedPlaylist1, playlists.selectedPlaylist2])
+
+    const changePlaylist1 = (e) => {
         setPlaylists({
             ...playlists,
             selectedPlaylist1: e.target.value
@@ -283,7 +311,7 @@ function CombinePlaylists() {
                         <hr></hr>
                         <Row>
                             <Col>
-                            <h2> Playlist 1</h2>
+                            <h2> Playlist 1 </h2>
                             <Dropdown 
                                 options={playlists.playlistList}
                                 value={playlists.selectedPlaylist2}
@@ -295,7 +323,7 @@ function CombinePlaylists() {
                             
                             </Col>
                             <Col>
-                            <h2> Playlist 2</h2>
+                                <h2> Playlist 2 </h2>
                             <Dropdown
                                 options={playlists.playlistList}
                                 value={playlists.selectedPlaylist1}
@@ -312,6 +340,15 @@ function CombinePlaylists() {
                                 </Button>
                             </Col>
                         </Row>
+                        {success && 
+                            <Row>
+                                <Col>
+                                    <CombineSuccess>
+                                        Success! View your newly updated playlist <a href={playlists.combinedPlaylistLink}>here</a>
+                                    </CombineSuccess>
+                                </Col>
+                            </Row>
+                        }
                         </> 
                     ) : (
                         <Row>
