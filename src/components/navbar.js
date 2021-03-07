@@ -24,7 +24,7 @@ export default function Navigation() {
             <Nav className="mr-auto">
             </Nav>
             <Nav>   
-                <StyledNavlink to="/collabplaylist">Collab Playlist</StyledNavlink>
+                <StyledNavlink to="/userstats">User Stats</StyledNavlink>
                 <StyledNavlink to="/combineplaylists">Playlist Combiner</StyledNavlink>
                 <StyledNavlink to="/developers">Developers</StyledNavlink>      
             </Nav>

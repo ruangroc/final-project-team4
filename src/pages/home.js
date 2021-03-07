@@ -1,5 +1,7 @@
 import Navigation from "../components/navbar";
-import {Container, Row, Col} from 'react-bootstrap';
+
+import {Container, Row, Col, Jumbotron, Button} from 'react-bootstrap';
+
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
 import scopes from '../utils/scopes';
@@ -17,17 +19,21 @@ export default function Home() {
     return (
         <>
             <Navigation/>
-            <Container>
-                <Row>
-                    <Col>
+            <Container >
+                <br></br>
+
+                    <Jumbotron>
                         <h1> Spotify Interactive </h1>
-                    </Col>
-                </Row>
+                        <p> Learn and interact with your Spotify music taste with statistics and cat visualizations. Find out what music the developers are listening to and combine your playlists with our playlist combiner feature. </p>
+                        <br></br>
+                        <br></br>
+                        <Button variant="outline-success" href='https://github.com/osu-cs499-w21/final-project-team4'>Github </Button>
+                    </Jumbotron>
+
                 <Row>
                     <Col>
                         {loggedIn ? (
                             <div>
-                                ur logged in woo
                             </div>
                         ) : (
                                 <div>
