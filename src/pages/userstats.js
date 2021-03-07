@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Button, CardDeck} from 'react-bootstrap';
+import {Container, Row, Col, Card, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import { get } from '../utils/api';
 import { useSelector } from 'react-redux';
@@ -12,12 +12,7 @@ import scopes from '../utils/scopes';
 import { SpotifyAuth } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 
-// perhaps add ability to let users select if they want to see short, medium, or long term stats
-// also want to add on-hover tooltips or something to explain the cat visual
-
-// other data vis ideas
-// word cloud or bar chart of the most common genres (data from artists and tracks)
-// five number summary for popularity for artists and/or songs (a line chart or histogram or something, with 100 = most popular)
+// stretch goal: add ability to let users select if they want to see short, medium, or long term stats
 
 export default function UserStats() {
     const styles = css`
@@ -84,6 +79,10 @@ export default function UserStats() {
             top: 60%;
             left: 45%;
         }
+        .explanations {
+            width: 50%;
+            margin: 1% auto;
+        }
         @keyframes tongue-animation {
             0% { height: 0% }
             10% { height: 1% }
@@ -103,6 +102,7 @@ export default function UserStats() {
             50% { transform: rotate(10deg) }
             75% { transform: rotate(0deg) }
             100% { transform: rotate(-10deg) }
+        }
     `;
 
     const [topArtists, setTopArtists] = useState({});
@@ -208,9 +208,6 @@ export default function UserStats() {
         });
     }
 
-    // thinking of using average song duration for length of whiskers
-    // other audio features to make use of: acousticness, instrumentalness, speechiness, valence (positivity)
-    
     function average(array) {
         return array.reduce((a, b) => a + b) / array.length;
     }
@@ -262,6 +259,12 @@ export default function UserStats() {
         let averageDuration = Math.round(average(durationArray));
         let index = averageDuration % 6;
         return lengths[index];
+    }
+
+    function explanationTooltip(explanation) {
+        return (
+            <Tooltip>{explanation}</Tooltip>
+        );
     }
 
     function displayCatVis() {
@@ -344,23 +347,73 @@ export default function UserStats() {
                 top: "22%",
                 left: "80%"
             };
+
+            const tongueExplanation = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation)";
+            const backgroundExplanation = "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy)" +
+                " Opacity is based on the average loudness of your top 10 songs (solid = louder)";
+            const headExplanation = "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)";
+            const earsExplanation = "The animation speed is based on the average danceability of your top 10 songs (more danceable = faster animation)";
+            const whiskersExplanation = "The whisker length is based on the average duration of your top 10 songs";
             return (
-                <div id="cat-container" style={containerCss}>
-                    <div id="head" style={headCss}>
-                        <div id="left-eye" />
-                        <div id="right-eye" />
-                        <div id="nose" />
-                        <div id="left-ear" style={leftEarCss} />
-                        <div id="right-ear" style={rightEarCss} />
+                <Col>
+                    <Row>
+                        <div id="cat-container" style={containerCss}>
+                            <div id="head" style={headCss}>
+                                <div id="left-eye" />
+                                <div id="right-eye" />
+                                <div id="nose" />
+                                
+                                <div id="left-ear" style={leftEarCss} />
+                                <div id="right-ear" style={rightEarCss} />
+                            
+                            
+                                <div id="whisker1" style={whisker1} />
+                                <div id="whisker2" style={whisker2} />
+                                <div id="whisker3" style={whisker3} />
+                                <div id="whisker4" style={whisker4} />
 
-                        <div id="whisker1" style={whisker1} />
-                        <div id="whisker2" style={whisker2} />
-                        <div id="whisker3" style={whisker3} />
-                        <div id="whisker4" style={whisker4} />
-
-                        <div id="tongue" style={tongueCss} />
-                    </div>
-                </div>
+                                <div id="tongue" style={tongueCss} />
+                            </div>
+                        </div>
+                    </Row>
+                    <Row className="explanations">
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(backgroundExplanation)}>
+                                <Card className="card">
+                                    <Card.Title>Background</Card.Title>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(headExplanation)}>
+                                <Card className="card">
+                                    <Card.Title>Cat Color</Card.Title>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(tongueExplanation)}>
+                                <Card className="card">
+                                    <Card.Title>Tongue</Card.Title>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(earsExplanation)}>
+                                <Card className="card">
+                                    <Card.Title>Ears</Card.Title>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(whiskersExplanation)}>
+                                <Card className="card">
+                                    <Card.Title>Whiskers</Card.Title>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                    </Row>
+                </Col>
             );
         }
         return (<p>Loading cat visualization...</p>);
