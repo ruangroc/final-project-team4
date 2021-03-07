@@ -28,13 +28,23 @@ export default function UserStats() {
             margin: 1%;
         }
         h5 {
-            margin: 0 auto;
+            margin: 0;
+            margin-left: 2%;
+            text-align: left;
+        }
+        .song-image {
+            width: 10%;
+            margin: 1%;
         }
         .card {
             background-color: #3BE378;
             height: 100%;
             width: 100%;
             text-align: center;
+        }
+        .cards-container {
+            padding-left: 1%;
+            padding-right: 1%;
         }
         #cat-container {
             width: 50%;
@@ -76,10 +86,15 @@ export default function UserStats() {
         }
         @keyframes tongue-animation {
             0% { height: 0% }
+            10% { height: 1% }
             20% { height: 2% }
+            30% { height: 3% }
             40% { height: 4% }
-            50% { height: 6% }
+            50% { height: 5% }
+            60% { height: 6% }
+            70% { height: 7% }
             80% { height: 8% }
+            90% { height: 9% }
             100% { height: 10% }
         }
     `;
@@ -173,10 +188,15 @@ export default function UserStats() {
         }
         return topTracks.items.map(song => {
             return (
-                <Col lg={1} md={2} xs={3}>
-                    <Button key={song.uri} className="card">
-                        <h5><a href={song.external_urls.spotify} target="_blank">{song.name}</a></h5>
-                    </Button>
+                <Col lg={3} md={3} xs={4}>
+                    <Card key={song.uri} className="card">
+                        <h5>
+                            <a href={song.external_urls.spotify} target="_blank">
+                                <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                {song.name}
+                            </a>
+                        </h5>
+                    </Card>
                 </Col>
             );
         });
@@ -211,14 +231,14 @@ export default function UserStats() {
         let modeArray = audioFeatures.map(item => item.mode);
         let averageMode = average(modeArray);
         if (Math.round(averageMode) === 1) return "#fefae0";
-        else return "#463f3a";
+        else return "#432818";
     }
 
-    // assumed bpm range of 0-200, will map to a 0-5 second interval
+    // assumed bpm range of 0-200, will map to a 0-4 second interval
     function computeAnimationSpeed() {
         let tempoArray = audioFeatures.map(item => item.tempo);
         let averageTempo = average(tempoArray);
-        return averageTempo * (5/200);
+        return averageTempo * (4/200);
     }
 
     function displayCatVis() {
@@ -291,12 +311,15 @@ export default function UserStats() {
             <Row>
                 <Col><h2>Your Spotify Statistics</h2></Col>
             </Row>
-            <Row><h4>Your Top 10 Songs</h4></Row>
-            <Row>{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
-            <Row><h4>Your Top 10 Artists</h4></Row>
-            <Row>{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
-            <Row><h4>Cat visualization created based on your top songs</h4></Row>
+
+            <Row><h4 style={{textAlign: "center", margin: " 1% auto"}}>Cat visualization created based on your top songs</h4></Row>
             <Row>{displayCatVis()}</Row>
+            
+            <Row><h4>Your Top 10 Artists</h4></Row>
+            <Row className="cards-container">{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
+
+            <Row><h4>Your Top 10 Songs</h4></Row>
+            <Row className="cards-container">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
         </Container>) 
         : 
         (<div>
