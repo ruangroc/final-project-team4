@@ -21,6 +21,18 @@ function Developer() {
         "kristina": "https://ih0.redbubble.net/image.60088184.6145/flat,1000x1000,075,f.u2.jpg",
         "anita": "http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg"
     });
+
+    const [githubSrc, setGithubSrc] = useState({
+        "thuyvy": "https://github.com/thuyvyng",
+        "kristina": "https://github.com/kristinaxlee",
+        "anita": "https://github.com/ruangroc"
+    });
+
+    const [linkedinSrc, setLinkedinSrc] = useState({
+        "thuyvy": "https://www.linkedin.com/in/thuyvyng/",
+        "kristina": "https://www.linkedin.com/in/kristinaxlee/",
+        "anita": "https://www.linkedin.com/in/anita-ruangrotsakun/"
+    });
     const [devPlaylists, setDevPlaylists] = useState([]);
 
     const styles = css`
@@ -138,10 +150,13 @@ function Developer() {
                     <Row>
                         {dev !== [] &&
                         (<Card className="dev-card">
+                            <Card.Body>
                             <Card.Title> {dev.display_name} </Card.Title>
                             <Card.Img src={(dev.images && dev.images.length) ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
-                            other info here
+                            <Card.Link href={githubSrc[developer]}> GitHub </Card.Link>
+                            <Card.Link href={linkedinSrc[developer]}> Linkedin </Card.Link>
+                            </Card.Body>
                         </Card>)}
                     </Row>
                 </Col>
