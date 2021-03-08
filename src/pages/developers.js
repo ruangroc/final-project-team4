@@ -75,9 +75,10 @@ function Developer() {
             margin-left: 5%;
         }
 
-        a {
-            color: white;
+        .center{
+            text-align: center;
         }
+
     `;
     
     const auth = useSelector(getAuth);
@@ -167,7 +168,7 @@ function Developer() {
                         {dev !== [] &&
                         (<Card className="dev-card">
                             <Card.Body>
-                            <Card.Title> {dev.display_name} </Card.Title>
+                            <Card.Title> <h2>{dev.display_name} </h2></Card.Title>
                             <Card.Img src={(dev.images && dev.images.length) ? dev.images[0].url : imageSrc[developer]} className="dev-image" />
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
                             <Card.Link className="white" href={githubSrc[developer]}> GitHub </Card.Link>
@@ -180,7 +181,7 @@ function Developer() {
                     <Row>
                         <Col>
                             <br></br>
-                            <h4> {dev.display_name}'s Playlists</h4>
+                            <h3 className="center"> Playlists</h3>
                             {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
                         </Col>
                     </Row>
