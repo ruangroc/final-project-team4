@@ -6,7 +6,8 @@ const scopes = [
   Scopes.playlistReadCollaborative,
   Scopes.playlistReadPrivate,
   Scopes.playlistModifyPrivate,
-  Scopes.playlistModifyPublic
+  Scopes.playlistModifyPublic,
+  Scopes.userTopRead
 ];
 
 export default scopes;
