@@ -73,6 +73,10 @@ function Developer() {
             margin-top: 5%;
             margin-left: 5%;
         }
+
+        a {
+            color: white;
+        }
     `;
     
     const auth = useSelector(getAuth);
@@ -151,12 +155,12 @@ function Developer() {
             (<Row css={styles}>
                 <Col lg={2} xs={5} className="sidebar">
                     <br></br>
-                    <Row className="sidebar-header"><h4>Developers </h4></Row>
-                    <Row><Button  variant="secondary" href="/developers/anita" className="side-button"> <h6> Anita</h6> </Button></Row>
-                    <Row><Button  variant="secondary"  className="side-button" href = "/developers/kristina"> <h6>Kristina</h6> </Button></Row>
-                    <Row><Button  variant="secondary" className="side-button" href="/developers/thuyvy"> <h6> ThuyVy</h6> </Button></Row>
+                    <Row className="sidebar-header"><h5>Developers </h5></Row>
+                    <Button variant="secondary" className="side-button"> <Link to ="/developers/anita"><h6> Anita</h6> </Link> </Button> 
+                    <Button variant="secondary" className="side-button"> <Link to ="/developers/kristina"><h6> Kristina</h6> </Link> </Button> 
+                    <Button variant="secondary" className="side-button"> <Link to ="/developers/thuyvy"><h6> Thuy-Vy</h6> </Link> </Button> 
                 </Col>
-                <Col lg={3} xs={6}>
+                <Col lg={2} xs={6}>
                     <Row>
                         {dev !== [] &&
                         (<Card className="dev-card">
@@ -170,10 +174,11 @@ function Developer() {
                         </Card>)}
                     </Row>
                 </Col>
-                <Col lg={7} xs={12}>
+                <Col lg={8} xs={12}>
                     <Row>
                         <Col>
-                            <h3>{dev.display_name}'s Playlists</h3>
+                            <br></br>
+                            <h4> {dev.display_name}'s Playlists</h4>
                             {devPlaylists !== [] ? <Row>{displayPlaylists()}</Row> : <p>"Loading playlists..."</p>}
                         </Col>
                     </Row>
