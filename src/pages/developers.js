@@ -50,7 +50,7 @@ function Developer() {
             width: 100%;
             height: 100%;
         }
-        Cart.Title{
+        a {
             color: black;
         }
 
@@ -156,9 +156,10 @@ function Developer() {
                 <Col lg={2} xs={5} className="sidebar">
                     <br></br>
                     <Row className="sidebar-header"><h5>Developers </h5></Row>
-                    <Button variant="secondary" className="side-button"> <Link to ="/developers/anita"><h6> Anita</h6> </Link> </Button> 
-                    <Button variant="secondary" className="side-button"> <Link to ="/developers/kristina"><h6> Kristina</h6> </Link> </Button> 
-                    <Button variant="secondary" className="side-button"> <Link to ="/developers/thuyvy"><h6> Thuy-Vy</h6> </Link> </Button> 
+                    <Link to ="/developers/anita"> <Button variant="secondary" className="side-button"> <h6> Anita</h6> </Button> </Link>
+                    <Link to ="/developers/kristina"> <Button variant="secondary" className="side-button"> <h6> Kristina</h6> </Button> </Link>
+                    <Link to ="/developers/thuyvy"> <Button variant="secondary" className="side-button"> <h6> ThuyVy</h6> </Button> </Link>
+
                 </Col>
                 <Col lg={2} xs={6}>
                     <Row>
@@ -220,7 +221,7 @@ function Developers() {
             text-align: center;
             margin: 1%;
         }
-        h2 {
+        a {
             color: black;
         }
         .image {
