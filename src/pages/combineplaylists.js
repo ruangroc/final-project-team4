@@ -11,7 +11,7 @@ import scopes from '../utils/scopes';
 import Dropdown from '../components/Dropdown';
 
 // Spotify Auth package
-import { SpotifyAuth } from 'react-spotify-auth'
+import { SpotifyAuth} from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 const CombineSuccess = styled.div`
