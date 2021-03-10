@@ -28,12 +28,17 @@ export default function UserStats() {
             margin-left: 2%;
             text-align: left;
         }
+        h6 {
+            padding: 5px;
+            margin: 1%;
+        }
         .song-image {
-            width: 10%;
+            width: 8%;
             margin: 1%;
         }
         .card {
             background-color: #3BE378;
+            border: 1px #FFF solid;
             height: 100%;
             width: 100%;
             text-align: center;
@@ -46,6 +51,15 @@ export default function UserStats() {
         .centered {
             margin: 1% auto;
             text-align: center;
+            justify-content: center;
+        }
+        .active-button {
+            background-color: #3BE378;
+            border: 1px #3BE378 solid;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            color: white;
         }
         #cat-container {
             width: 50%;
@@ -86,7 +100,7 @@ export default function UserStats() {
             left: 45%;
         }
         .explanations {
-            width: 50%;
+            width: 85%;
             margin: 1% auto;
         }
         @keyframes tongue-animation {
@@ -185,10 +199,10 @@ export default function UserStats() {
             return (
                 <Col lg={1} md={2} xs={3}>
                     <Card key={artist.uri} className="card">
-                        <Card.Title>
-                            <Card.Img src={(artist.images && artist.images.length > 1 && artist.images[2]) ? artist.images[2].url : artist.images[0]} />
+                        <Card.Img src={(artist.images && artist.images.length >= 1 && artist.images[0]) ? artist.images[0].url : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"} />
+                        <h6>
                             <a href={artist.external_urls.spotify} target="_blank">{artist.name}</a>
-                        </Card.Title>
+                        </h6>
                     </Card>
                 </Col>
             );
@@ -199,20 +213,42 @@ export default function UserStats() {
         if (topTracks.items === undefined) {
             return <p>Loading top tracks...</p>
         }
-        return topTracks.items.slice(0, 10).map(song => {
-            return (
-                <Col lg={3} md={3} xs={4}>
-                    <Card key={song.uri} className="card">
-                        <h5>
-                            <a href={song.external_urls.spotify} target="_blank">
-                                <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
-                                {song.name}
-                            </a>
-                        </h5>
-                    </Card>
-                </Col>
-            );
-        });
+        return (
+            <Col>
+                <Row>
+                    {topTracks.items.slice(0, 5).map(song => {
+                        return (
+                            <Col>
+                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                    <h6>
+                                        <a href={song.external_urls.spotify} target="_blank">
+                                            <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                            {song.name}
+                                        </a>
+                                    </h6>
+                                </Card>
+                            </Col>
+                        );
+                    })}
+                </Row>
+                <Row>
+                    {topTracks.items.slice(5, 10).map(song => {
+                        return (
+                            <Col>
+                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                    <h6>
+                                        <a href={song.external_urls.spotify} target="_blank">
+                                            <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                            {song.name}
+                                        </a>
+                                    </h6>
+                                </Card>
+                            </Col>
+                        );
+                    })}
+                </Row>
+            </Col>
+        );
     }
 
     function average(array) {
@@ -271,6 +307,67 @@ export default function UserStats() {
     function explanationTooltip(explanation) {
         return (
             <Tooltip>{explanation}</Tooltip>
+        );
+    }
+
+    function catVisTooltips() {
+        const tooltipTitles = ["Background Colors", "Background Opacity", "Cat Color", "Tongue", "Ears", "Whiskers"];
+
+        let energyArray = audioFeatures.map(item => item.energy);
+        let averageEnergy = average(energyArray).toFixed(2);
+        let minEnergy = Math.min(...energyArray).toFixed(2);
+        let maxEnergy = Math.max(...energyArray).toFixed(2);
+        const background = "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy, red = low energy)." + 
+            "\nYour min: " + minEnergy + " avg: " + averageEnergy + " max: " + maxEnergy;
+        
+        let averageOpacity = average(audioFeatures.map(item => item.loudness)).toFixed(2);
+        const opacity= " Opacity is based on the average loudness of your top 10 songs (solid = louder). Your average song loudness: " + -1*averageOpacity;
+        
+        let averageKey = average(audioFeatures.map(item => item.mode)).toFixed(2);
+        const catColor = "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)." +
+            " \nYour average song key: " + averageKey;
+        
+        let averageTempo = average(audioFeatures.map(item => item.tempo)).toFixed(2);
+        const tongue = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). \nYour average song tempo: " + averageTempo;
+        
+        let averageDanceability = average(audioFeatures.map(item => item.danceability)).toFixed(2);
+        const ears = "The animation speed is based on the average danceability of your top 10 songs (more danceable = faster animation)." +
+            " \nYour average song danceability: " + averageDanceability;
+
+        let averageDuration = average(audioFeatures.map(item => item.duration_ms)).toFixed(2);
+        const whiskers = "The whisker length is based on the average duration of your top songs. \nYour average song duration: " + averageDuration;
+        const explanations = [background, opacity, catColor, tongue, ears, whiskers];
+        return (
+            <Row className="explanations">
+                <Col>
+                    <Row className="centered">
+                        {tooltipTitles.slice(0, 3).map((title, i) => {
+                            return (
+                                <Col xs={2}>
+                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i])}>
+                                        <Card className="card">
+                                            <h6>{title}</h6>
+                                        </Card>
+                                    </OverlayTrigger>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                    <Row className="centered">
+                    {tooltipTitles.slice(3, 6).map((title, i) => {
+                            return (
+                                <Col xs={2}>
+                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i])}>
+                                        <Card className="card">
+                                            <h6>{title}</h6>
+                                        </Card>
+                                    </OverlayTrigger>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                </Col>
+            </Row>
         );
     }
 
@@ -355,12 +452,6 @@ export default function UserStats() {
                 left: "80%"
             };
 
-            const tongueExplanation = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation)";
-            const backgroundExplanation = "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy)" +
-                " Opacity is based on the average loudness of your top 10 songs (solid = louder)";
-            const headExplanation = "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)";
-            const earsExplanation = "The animation speed is based on the average danceability of your top 10 songs (more danceable = faster animation)";
-            const whiskersExplanation = "The whisker length is based on the average duration of your top 10 songs";
             return (
                 <Col>
                     <Row>
@@ -383,43 +474,7 @@ export default function UserStats() {
                             </div>
                         </div>
                     </Row>
-                    <Row className="explanations">
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(backgroundExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Background</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(headExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Cat Color</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(tongueExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Tongue</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(earsExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Ears</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(whiskersExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Whiskers</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                    </Row>
+                    {catVisTooltips()}
                 </Col>
             );
         }
@@ -430,27 +485,30 @@ export default function UserStats() {
         return (
             <Col lg={4}>
                 <ButtonGroup style={{width: '100%'}}>
-                    <Button 
-                    className="card" 
-                    onClick={() => {setDataTimeframe("short_term")}} 
-                    disabled={dataTimeframe === "short_term" ? true : false}
-                    >
-                        <h6 className="centered">Short Term</h6>
-                    </Button>
-                    <Button 
-                    className="card" 
-                    onClick={() => {setDataTimeframe("medium_term")}}
-                    disabled={dataTimeframe === "medium_term" ? true : false}
-                    >
-                        <h6 className="centered">Medium Term</h6>
-                    </Button>
-                    <Button 
-                    className="card" 
-                    onClick={() => {setDataTimeframe("long_term")}}
-                    disabled={dataTimeframe === "long_term" ? true : false}
-                    >
-                        <h6 className="centered">Long Term</h6>
-                    </Button>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("The last 4 weeks")}>
+                        <Button 
+                        className={dataTimeframe === "short_term" ? "active-button" : "card"}
+                        onClick={() => {setDataTimeframe("short_term")}} 
+                        >
+                            <h6 className="centered">Short Term</h6>
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("The last 6 months")}>
+                        <Button 
+                        className={dataTimeframe === "medium_term" ? "active-button" : "card"}
+                        onClick={() => {setDataTimeframe("medium_term")}}
+                        >
+                            <h6 className="centered">Medium Term</h6>
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("All data")}>
+                        <Button 
+                        className={dataTimeframe === "long_term" ? "active-button" : "card"} 
+                        onClick={() => {setDataTimeframe("long_term")}}
+                        >
+                            <h6 className="centered">Long Term</h6>
+                        </Button>
+                    </OverlayTrigger>
                 </ButtonGroup>
             </Col>
         );
