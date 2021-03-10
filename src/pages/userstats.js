@@ -1,6 +1,6 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
@@ -14,6 +14,7 @@ import { SpotifyAuth } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 
 // stretch goal: add ability to let users select if they want to see short, medium, or long term stats
+// add variable nose color
 
 export default function UserStats() {
     const styles = css`
@@ -37,10 +38,15 @@ export default function UserStats() {
             height: 100%;
             width: 100%;
             text-align: center;
+            color: black;
         }
         .cards-container {
             padding-left: 1%;
             padding-right: 1%;
+        }
+        .centered {
+            margin: 1% auto;
+            text-align: center;
         }
         #cat-container {
             width: 50%;
@@ -420,6 +426,18 @@ export default function UserStats() {
         return (<p>Loading cat visualization...</p>);
     }
 
+    function displayTimeframeButtons() {
+        return (
+            <Col lg={4}>
+                <ButtonGroup style={{width: '100%'}}>
+                    <Button className="card"><h6 className="centered">Short Term</h6></Button>
+                    <Button className="card"><h6 className="centered">Medium Term</h6></Button>
+                    <Button className="card"><h6 className="centered">Long Term</h6></Button>
+                </ButtonGroup>
+            </Col>
+        );
+    }
+
     return (
     <>
         <Navigation/>
@@ -429,14 +447,21 @@ export default function UserStats() {
                 <Col><h2>Your Spotify Statistics</h2></Col>
             </Row>
 
-            <Row><h4 style={{textAlign: "center", margin: " 1% auto"}}>Cat visualization created based on your top songs</h4></Row>
+            <Row><h4 className="centered">Select timeframe for data:</h4></Row>
+            <Row className="centered">
+                <Col></Col>
+                {displayTimeframeButtons()}
+                <Col></Col>
+            </Row>
+
+            <Row><h4 className="centered">Cat visualization created based on your top songs</h4></Row>
             <Row>{displayCatVis()}</Row>
             
-            <Row><h4>Your Top 10 Artists</h4></Row>
-            <Row className="cards-container">{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
+            <Row><h4 className="centered">Your Top 10 Artists</h4></Row>
+            <Row className="cards-container centered">{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
 
-            <Row><h4>Your Top 10 Songs</h4></Row>
-            <Row className="cards-container">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
+            <Row><h4 className="centered">Your Top 10 Songs</h4></Row>
+            <Row className="cards-container centered">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
         </Container>) 
         : 
         (<div>
