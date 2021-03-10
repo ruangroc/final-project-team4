@@ -134,7 +134,7 @@ export default function UserStats() {
     const loggedIn = auth.loggedIn;
 
     useEffect(() => {
-        console.log("access token:", auth.accessToken);
+        // console.log("access token:", auth.accessToken);
         if (loggedIn) {
             fetchTopArtists();
             fetchTopTracks();
@@ -153,7 +153,7 @@ export default function UserStats() {
             const trackIds = topTracks.items.map(song => song.id).join();
             const url = `https://api.spotify.com/v1/audio-features?ids=${trackIds}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch audio features:", result.audio_features);
+            // console.log("fetch audio features:", result.audio_features);
             setAudioFeatures(result.audio_features || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -167,7 +167,7 @@ export default function UserStats() {
         try{
             const url = `https://api.spotify.com/v1/me/top/artists?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch top artists result:", result);
+            // console.log("fetch top artists result:", result);
             setTopArtists(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -181,7 +181,7 @@ export default function UserStats() {
         try{
             const url = `https://api.spotify.com/v1/me/top/tracks?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch top tracks result:", result);
+            // console.log("fetch top tracks result:", result);
             setTopTracks(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -331,11 +331,11 @@ export default function UserStats() {
         const tongue = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). \nYour average song tempo: " + averageTempo;
         
         let averageDanceability = average(audioFeatures.map(item => item.danceability)).toFixed(2);
-        const ears = "The animation speed is based on the average danceability of your top 10 songs (more danceable = faster animation)." +
+        const ears = "The animation speed is based on the average danceability of your top 10 songs ( 1 = more danceable = faster animation)." +
             " \nYour average song danceability: " + averageDanceability;
 
-        let averageDuration = average(audioFeatures.map(item => item.duration_ms)).toFixed(2);
-        const whiskers = "The whisker length is based on the average duration of your top songs. \nYour average song duration: " + averageDuration;
+        let averageDuration = (average(audioFeatures.map(item => item.duration_ms)) / 1000).toFixed(2);
+        const whiskers = "The whisker length is based on the average duration of your top songs. \nYour average song duration: " + averageDuration + " seconds";
         const explanations = [background, opacity, catColor, tongue, ears, whiskers];
         return (
             <Row className="explanations">
@@ -357,7 +357,7 @@ export default function UserStats() {
                     {tooltipTitles.slice(3, 6).map((title, i) => {
                             return (
                                 <Col xs={2}>
-                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i])}>
+                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i+3])}>
                                         <Card className="card">
                                             <h6>{title}</h6>
                                         </Card>
