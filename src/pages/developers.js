@@ -103,7 +103,7 @@ function Developer() {
         else {
             console.log("not logged in!");
         }
-    }, [developer]);
+    }, [developer, loggedIn]);
     
     
     async function fetchspotifyuser(user){
