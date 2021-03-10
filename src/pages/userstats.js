@@ -13,8 +13,7 @@ import { useState, useEffect } from 'react';
 import { SpotifyAuth } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 
-// stretch goal: add ability to let users select if they want to see short, medium, or long term stats
-// add variable nose color
+// next: add variable nose color, include the actual numbers in the tooltips
 
 export default function UserStats() {
     const styles = css`
@@ -115,6 +114,7 @@ export default function UserStats() {
     const [topArtists, setTopArtists] = useState({});
     const [topTracks, setTopTracks] = useState({});
     const [audioFeatures, setAudioFeatures] = useState({});
+    const [dataTimeframe, setDataTimeframe] = useState("short_term");
 
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
@@ -128,7 +128,7 @@ export default function UserStats() {
         else {
             console.log("not logged in!");
         }
-    }, []);
+    }, [loggedIn, dataTimeframe]);
 
     useEffect(() => {
         if (topTracks !== {}) fetchAudioFeatures();
@@ -151,7 +151,7 @@ export default function UserStats() {
 
     async function fetchTopArtists() {
         try{
-            const url = `https://api.spotify.com/v1/me/top/artists?limit=10`;
+            const url = `https://api.spotify.com/v1/me/top/artists?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
             console.log("fetch top artists result:", result);
             setTopArtists(result || {});
@@ -165,7 +165,7 @@ export default function UserStats() {
 
     async function fetchTopTracks() {
         try{
-            const url = `https://api.spotify.com/v1/me/top/tracks?limit=10`;
+            const url = `https://api.spotify.com/v1/me/top/tracks?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
             console.log("fetch top tracks result:", result);
             setTopTracks(result || {});
@@ -181,7 +181,7 @@ export default function UserStats() {
         if (topArtists.items === undefined) {
             return <p>Loading top artists...</p>
         }
-        return topArtists.items.map(artist => {
+        return topArtists.items.slice(0, 10).map(artist => {
             return (
                 <Col lg={1} md={2} xs={3}>
                     <Card key={artist.uri} className="card">
@@ -199,7 +199,7 @@ export default function UserStats() {
         if (topTracks.items === undefined) {
             return <p>Loading top tracks...</p>
         }
-        return topTracks.items.map(song => {
+        return topTracks.items.slice(0, 10).map(song => {
             return (
                 <Col lg={3} md={3} xs={4}>
                     <Card key={song.uri} className="card">
@@ -430,9 +430,27 @@ export default function UserStats() {
         return (
             <Col lg={4}>
                 <ButtonGroup style={{width: '100%'}}>
-                    <Button className="card"><h6 className="centered">Short Term</h6></Button>
-                    <Button className="card"><h6 className="centered">Medium Term</h6></Button>
-                    <Button className="card"><h6 className="centered">Long Term</h6></Button>
+                    <Button 
+                    className="card" 
+                    onClick={() => {setDataTimeframe("short_term")}} 
+                    disabled={dataTimeframe === "short_term" ? true : false}
+                    >
+                        <h6 className="centered">Short Term</h6>
+                    </Button>
+                    <Button 
+                    className="card" 
+                    onClick={() => {setDataTimeframe("medium_term")}}
+                    disabled={dataTimeframe === "medium_term" ? true : false}
+                    >
+                        <h6 className="centered">Medium Term</h6>
+                    </Button>
+                    <Button 
+                    className="card" 
+                    onClick={() => {setDataTimeframe("long_term")}}
+                    disabled={dataTimeframe === "long_term" ? true : false}
+                    >
+                        <h6 className="centered">Long Term</h6>
+                    </Button>
                 </ButtonGroup>
             </Col>
         );
