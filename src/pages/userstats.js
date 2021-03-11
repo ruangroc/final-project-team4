@@ -64,7 +64,6 @@ export default function UserStats() {
         #cat-container {
             width: 50%;
             height: 100%;
-            border: 2px solid black;
             margin: auto;
         }
         #left-eye {
@@ -520,7 +519,7 @@ export default function UserStats() {
         {loggedIn ? 
         (<Container fluid css={styles}>
             <Row>
-                <Col><h2>Your Spotify Statistics</h2></Col>
+                <Col><h2 className="centered">Your Spotify Statistics</h2></Col>
             </Row>
 
             <Row><h4 className="centered">Select timeframe for data:</h4></Row>
