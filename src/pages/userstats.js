@@ -1,6 +1,6 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react';
 import { SpotifyAuth } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 
-// stretch goal: add ability to let users select if they want to see short, medium, or long term stats
+// next: add variable nose color, include the actual numbers in the tooltips
 
 export default function UserStats() {
     const styles = css`
@@ -28,24 +28,42 @@ export default function UserStats() {
             margin-left: 2%;
             text-align: left;
         }
+        h6 {
+            padding: 5px;
+            margin: 1%;
+        }
         .song-image {
-            width: 10%;
+            width: 8%;
             margin: 1%;
         }
         .card {
             background-color: #3BE378;
+            border: 1px #FFF solid;
             height: 100%;
             width: 100%;
             text-align: center;
+            color: black;
         }
         .cards-container {
             padding-left: 1%;
             padding-right: 1%;
         }
+        .centered {
+            margin: 1% auto;
+            text-align: center;
+            justify-content: center;
+        }
+        .active-button {
+            background-color: #3BE378;
+            border: 1px #3BE378 solid;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
         #cat-container {
             width: 50%;
             height: 100%;
-            border: 2px solid black;
             margin: auto;
         }
         #left-eye {
@@ -81,7 +99,7 @@ export default function UserStats() {
             left: 45%;
         }
         .explanations {
-            width: 50%;
+            width: 85%;
             margin: 1% auto;
         }
         @keyframes tongue-animation {
@@ -109,12 +127,13 @@ export default function UserStats() {
     const [topArtists, setTopArtists] = useState({});
     const [topTracks, setTopTracks] = useState({});
     const [audioFeatures, setAudioFeatures] = useState({});
+    const [dataTimeframe, setDataTimeframe] = useState("short_term");
 
     const auth = useSelector(getAuth);
     const loggedIn = auth.loggedIn;
 
     useEffect(() => {
-        console.log("access token:", auth.accessToken);
+        // console.log("access token:", auth.accessToken);
         if (loggedIn) {
             fetchTopArtists();
             fetchTopTracks();
@@ -122,7 +141,7 @@ export default function UserStats() {
         else {
             console.log("not logged in!");
         }
-    }, []);
+    }, [loggedIn, dataTimeframe]);
 
     useEffect(() => {
         if (topTracks !== {}) fetchAudioFeatures();
@@ -133,7 +152,7 @@ export default function UserStats() {
             const trackIds = topTracks.items.map(song => song.id).join();
             const url = `https://api.spotify.com/v1/audio-features?ids=${trackIds}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch audio features:", result.audio_features);
+            // console.log("fetch audio features:", result.audio_features);
             setAudioFeatures(result.audio_features || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -145,9 +164,9 @@ export default function UserStats() {
 
     async function fetchTopArtists() {
         try{
-            const url = `https://api.spotify.com/v1/me/top/artists?limit=10`;
+            const url = `https://api.spotify.com/v1/me/top/artists?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch top artists result:", result);
+            // console.log("fetch top artists result:", result);
             setTopArtists(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -159,9 +178,9 @@ export default function UserStats() {
 
     async function fetchTopTracks() {
         try{
-            const url = `https://api.spotify.com/v1/me/top/tracks?limit=10`;
+            const url = `https://api.spotify.com/v1/me/top/tracks?time_range=${dataTimeframe}`;
             const result = await get(url, { access_token: auth.accessToken });
-            console.log("fetch top tracks result:", result);
+            // console.log("fetch top tracks result:", result);
             setTopTracks(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -175,14 +194,14 @@ export default function UserStats() {
         if (topArtists.items === undefined) {
             return <p>Loading top artists...</p>
         }
-        return topArtists.items.map(artist => {
+        return topArtists.items.slice(0, 10).map(artist => {
             return (
                 <Col lg={1} md={2} xs={3}>
                     <Card key={artist.uri} className="card">
-                        <Card.Title>
-                            <Card.Img src={(artist.images && artist.images.length > 1 && artist.images[2]) ? artist.images[2].url : artist.images[0]} />
+                        <Card.Img src={(artist.images && artist.images.length >= 1 && artist.images[0]) ? artist.images[0].url : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"} />
+                        <h6>
                             <a href={artist.external_urls.spotify} target="_blank">{artist.name}</a>
-                        </Card.Title>
+                        </h6>
                     </Card>
                 </Col>
             );
@@ -193,20 +212,42 @@ export default function UserStats() {
         if (topTracks.items === undefined) {
             return <p>Loading top tracks...</p>
         }
-        return topTracks.items.map(song => {
-            return (
-                <Col lg={3} md={3} xs={4}>
-                    <Card key={song.uri} className="card">
-                        <h5>
-                            <a href={song.external_urls.spotify} target="_blank">
-                                <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
-                                {song.name}
-                            </a>
-                        </h5>
-                    </Card>
-                </Col>
-            );
-        });
+        return (
+            <Col>
+                <Row>
+                    {topTracks.items.slice(0, 5).map(song => {
+                        return (
+                            <Col>
+                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                    <h6>
+                                        <a href={song.external_urls.spotify} target="_blank">
+                                            <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                            {song.name}
+                                        </a>
+                                    </h6>
+                                </Card>
+                            </Col>
+                        );
+                    })}
+                </Row>
+                <Row>
+                    {topTracks.items.slice(5, 10).map(song => {
+                        return (
+                            <Col>
+                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                    <h6>
+                                        <a href={song.external_urls.spotify} target="_blank">
+                                            <img className="song-image" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                            {song.name}
+                                        </a>
+                                    </h6>
+                                </Card>
+                            </Col>
+                        );
+                    })}
+                </Row>
+            </Col>
+        );
     }
 
     function average(array) {
@@ -265,6 +306,67 @@ export default function UserStats() {
     function explanationTooltip(explanation) {
         return (
             <Tooltip>{explanation}</Tooltip>
+        );
+    }
+
+    function catVisTooltips() {
+        const tooltipTitles = ["Background Colors", "Background Opacity", "Cat Color", "Tongue", "Ears", "Whiskers"];
+
+        let energyArray = audioFeatures.map(item => item.energy);
+        let averageEnergy = average(energyArray).toFixed(2);
+        let minEnergy = Math.min(...energyArray).toFixed(2);
+        let maxEnergy = Math.max(...energyArray).toFixed(2);
+        const background = "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy, red = low energy)." + 
+            "\nYour min: " + minEnergy + " avg: " + averageEnergy + " max: " + maxEnergy;
+        
+        let averageOpacity = average(audioFeatures.map(item => item.loudness)).toFixed(2);
+        const opacity= " Opacity is based on the average loudness of your top 10 songs (solid = louder). Your average song loudness: " + -1*averageOpacity;
+        
+        let averageKey = average(audioFeatures.map(item => item.mode)).toFixed(2);
+        const catColor = "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)." +
+            " \nYour average song key: " + averageKey;
+        
+        let averageTempo = average(audioFeatures.map(item => item.tempo)).toFixed(2);
+        const tongue = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). \nYour average song tempo: " + averageTempo;
+        
+        let averageDanceability = average(audioFeatures.map(item => item.danceability)).toFixed(2);
+        const ears = "The animation speed is based on the average danceability of your top 10 songs ( 1 = more danceable = faster animation)." +
+            " \nYour average song danceability: " + averageDanceability;
+
+        let averageDuration = (average(audioFeatures.map(item => item.duration_ms)) / 1000).toFixed(2);
+        const whiskers = "The whisker length is based on the average duration of your top songs. \nYour average song duration: " + averageDuration + " seconds";
+        const explanations = [background, opacity, catColor, tongue, ears, whiskers];
+        return (
+            <Row className="explanations">
+                <Col>
+                    <Row className="centered">
+                        {tooltipTitles.slice(0, 3).map((title, i) => {
+                            return (
+                                <Col xs={2}>
+                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i])}>
+                                        <Card className="card">
+                                            <h6>{title}</h6>
+                                        </Card>
+                                    </OverlayTrigger>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                    <Row className="centered">
+                    {tooltipTitles.slice(3, 6).map((title, i) => {
+                            return (
+                                <Col xs={2}>
+                                    <OverlayTrigger placement="bottom" overlay={explanationTooltip(explanations[i+3])}>
+                                        <Card className="card">
+                                            <h6>{title}</h6>
+                                        </Card>
+                                    </OverlayTrigger>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                </Col>
+            </Row>
         );
     }
 
@@ -349,12 +451,6 @@ export default function UserStats() {
                 left: "80%"
             };
 
-            const tongueExplanation = "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation)";
-            const backgroundExplanation = "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy)" +
-                " Opacity is based on the average loudness of your top 10 songs (solid = louder)";
-            const headExplanation = "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)";
-            const earsExplanation = "The animation speed is based on the average danceability of your top 10 songs (more danceable = faster animation)";
-            const whiskersExplanation = "The whisker length is based on the average duration of your top 10 songs";
             return (
                 <Col>
                     <Row>
@@ -377,47 +473,44 @@ export default function UserStats() {
                             </div>
                         </div>
                     </Row>
-                    <Row className="explanations">
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(backgroundExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Background</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(headExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Cat Color</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(tongueExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Tongue</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(earsExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Ears</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={explanationTooltip(whiskersExplanation)}>
-                                <Card className="card">
-                                    <Card.Title>Whiskers</Card.Title>
-                                </Card>
-                            </OverlayTrigger>
-                        </Col>
-                    </Row>
+                    {catVisTooltips()}
                 </Col>
             );
         }
         return (<p>Loading cat visualization...</p>);
+    }
+
+    function displayTimeframeButtons() {
+        return (
+            <Col lg={4}>
+                <ButtonGroup style={{width: '100%'}}>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("The last 4 weeks")}>
+                        <Button 
+                        className={dataTimeframe === "short_term" ? "active-button" : "card"}
+                        onClick={() => {setDataTimeframe("short_term")}} 
+                        >
+                            <h6 className="centered">Short Term</h6>
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("The last 6 months")}>
+                        <Button 
+                        className={dataTimeframe === "medium_term" ? "active-button" : "card"}
+                        onClick={() => {setDataTimeframe("medium_term")}}
+                        >
+                            <h6 className="centered">Medium Term</h6>
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" overlay={explanationTooltip("All data")}>
+                        <Button 
+                        className={dataTimeframe === "long_term" ? "active-button" : "card"} 
+                        onClick={() => {setDataTimeframe("long_term")}}
+                        >
+                            <h6 className="centered">Long Term</h6>
+                        </Button>
+                    </OverlayTrigger>
+                </ButtonGroup>
+            </Col>
+        );
     }
 
     return (
@@ -426,17 +519,24 @@ export default function UserStats() {
         {loggedIn ? 
         (<Container fluid css={styles}>
             <Row>
-                <Col><h2>Your Spotify Statistics</h2></Col>
+                <Col><h2 className="centered">Your Spotify Statistics</h2></Col>
             </Row>
 
-            <Row><h4 style={{textAlign: "center", margin: " 1% auto"}}>Cat visualization created based on your top songs</h4></Row>
+            <Row><h4 className="centered">Select timeframe for data:</h4></Row>
+            <Row className="centered">
+                <Col></Col>
+                {displayTimeframeButtons()}
+                <Col></Col>
+            </Row>
+
+            <Row><h4 className="centered">Cat visualization created based on your top songs</h4></Row>
             <Row>{displayCatVis()}</Row>
             
-            <Row><h4>Your Top 10 Artists</h4></Row>
-            <Row className="cards-container">{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
+            <Row><h4 className="centered">Your Top 10 Artists</h4></Row>
+            <Row className="cards-container centered">{ topArtists !== {} ? displayTopArtists() : <p>Loading top artists...</p> }</Row>
 
-            <Row><h4>Your Top 10 Songs</h4></Row>
-            <Row className="cards-container">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
+            <Row><h4 className="centered">Your Top 10 Songs</h4></Row>
+            <Row className="cards-container centered">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
         </Container>) 
         : 
         (<div>
