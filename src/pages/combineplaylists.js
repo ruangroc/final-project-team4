@@ -15,10 +15,15 @@ import { SpotifyAuth} from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 const CombineSuccess = styled.div`
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 5px;
     text-align: center;
-    background-color: #3BE378;
-    opacity: 0.8;
-    border: solid 1px darkgrey;
+    background-color: #d4edda;
+    border: solid 1px #c3e6cb;
+    color: #155724;
+    width: 50%;
+    border-radius: 10px;
 `;
 
 function CombinePlaylists() {
@@ -176,20 +181,30 @@ function CombinePlaylists() {
         return results;
     }
 
+    /**
+     * After a playlist is successfully combined, show the success message and open the playlist in a popup window
+     */
     function onCombineSuccess() {
+        setSuccess(false);
         
         // get external link for playlist 1
         playlists.playlistList.forEach(playlist => {
             if (playlist.id === playlists.selectedPlaylist1) {
                 setPlaylists({
                     ...playlists,
-                    combinedPlaylistLink: playlist.external_urls.spotify
+                    combinedPlaylistLink: playlist.external_urls.spotify,
+                    selectedPlaylist1: '',
+                    selectedPlaylist2: ''
                 });
+
+                // show success popup
+                setSuccess(true);
+
+                // open playlist link in new tab
+                const newWindow = window.open(playlist.external_urls.spotify, '_blank');
+                if (newWindow) newWindow.opener = null;
             }
         })
-
-        // show success popup
-        setSuccess(true);
     }
 
     /**
@@ -265,10 +280,6 @@ function CombinePlaylists() {
         }
     }, [loggedIn]);
 
-    useEffect(() => {
-        setSuccess(false);
-    }, [playlists.selectedPlaylist1, playlists.selectedPlaylist2])
-
     const changePlaylist1 = (e) => {
         setPlaylists({
             ...playlists,
@@ -340,20 +351,21 @@ function CombinePlaylists() {
                                 </Button>
                             </Col>
                         </Row>
-                        {success && 
-                            <Row>
-                                <Col>
-                                    <CombineSuccess>
-                                        Success! View your newly updated playlist <a href={playlists.combinedPlaylistLink}>here</a>
-                                    </CombineSuccess>
-                                </Col>
-                            </Row>
+                        {success &&
+                            <CombineSuccess>
+                                <strong>Success!</strong> View your newly updated playlist <a href={playlists.combinedPlaylistLink}>here</a>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                    onClick={() => {
+                                        setSuccess(false);
+                                    }}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </CombineSuccess>
                         }
                         </> 
                     ) : (
                         <Row>
                             <Col>
-
                             <div>
                                 <h5>Please login to use this feature!</h5>
                                 <SpotifyAuth
