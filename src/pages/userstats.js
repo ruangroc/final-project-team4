@@ -1,6 +1,6 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup} from 'react-bootstrap';
+import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup, Jumbotron} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
@@ -511,12 +511,15 @@ export default function UserStats() {
     return (
     <>
         <Navigation/>
+        <Container>
+            <br></br>
+        <Jumbotron>
+            <h1 style={{ textAlign: "center"}}>Your Spotify Statistics</h1>
+            <p style={{ textAlign: "center"}}> Have a cat visualization created based on your spotify data! </p>
+        </Jumbotron>
+        </Container>
         {loggedIn ? 
         (<Container fluid css={styles}>
-            <Row>
-                <Col><h2 className="centered">Your Spotify Statistics</h2></Col>
-            </Row>
-
             <Row><h4 className="centered">Select timeframe for data:</h4></Row>
             <Row className="centered">
                 <Col></Col>
@@ -535,14 +538,6 @@ export default function UserStats() {
         </Container>) 
         : 
         ( <Container fluid css={styles}>
-            <Row>
-                <Col><h2 className="centered">Your Spotify Statistics</h2></Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Login/>
-                </Col>
-            </Row>
             </Container>)
         }
     </>

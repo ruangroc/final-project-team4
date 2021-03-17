@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Jumbotron } from 'react-bootstrap';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import { useSelector } from 'react-redux';
@@ -284,29 +284,21 @@ function CombinePlaylists() {
     const styles = css`
     .row {
         text-align: center;
-        margin-top: 1%;
-        margin-bottom: 1%;
     }
-`;
+    `;
 
     return (
         <>
         <Navigation/>
+        <Jumbotron>
+                <br></br>
+                <h1 style={{ textAlign: "center"}}> Combine your playlists</h1>
+                <p style={{textAlign: "center"}}> Add all unique songs from playlist 1 into playlist 2 </p>
+        </Jumbotron>
         <Container fluid css={styles}>
-            <Row>
-                <Col>
-                    <h1> Combine your playlists!</h1>
-                </Col>
-            </Row>
 
                     {loggedIn ? (
                         <>
-                        <Row>
-                            <Col>
-                            <h3>Merge all songs from playlist 1 into playlist 2 </h3>
-                            </Col>
-                        </Row>
-                        <hr></hr>
                         <Row>
                             <Col>
                             <h2> Playlist 1 </h2>
@@ -334,7 +326,7 @@ function CombinePlaylists() {
                             <br></br>
                             <br></br>
                                 <Button variant="success" onClick={combinePlaylists}>
-                                    <h2> Combine! </h2>
+                                    <h4> Combine! </h4>
                                 </Button>
                             </Col>
                         </Row>

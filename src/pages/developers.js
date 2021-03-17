@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Button} from 'react-bootstrap';
+import {Container, Row, Col, Card, Button, Jumbotron} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
@@ -203,8 +203,6 @@ function Developers() {
     const styles = css`
         .header {
             text-align: center;
-            margin-top: 1%;
-            margin-bottom: 2%;
         }
         .card {
             width: 100%;
@@ -240,7 +238,11 @@ function Developers() {
                     <Col xs={7}>
                         <Row>
                             <Col>
+
+                                <br></br>
+                                <Jumbotron>
                                 <h1 className="header">Meet the Developers!</h1>
+                                </Jumbotron>
                             </Col>
                         </Row>
                         <Row>
