@@ -1,32 +1,18 @@
 import React from "react";
-import { NavLink} from 'react-router-dom';
 import { Nav, Navbar } from "react-bootstrap";
-import styled from '@emotion/styled/macro';
-
-const StyledNavlink = styled(NavLink)`
-    text-decoration: none;
-    padding: 10px;
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
-    color: grey;
-    &:hover {
-        color: black;
-    }
-`;
 
 export default function Navigation() {
     return (
-    <Navbar bg="light" expand="lg">
-        <Navbar.Brand><StyledNavlink to="/">Spotify Interactive</StyledNavlink></Navbar.Brand>
+    <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar.Brand href="/">Spotify Interactive</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
             </Nav>
             <Nav>   
-                <StyledNavlink to="/userstats">User Stats</StyledNavlink>
-                <StyledNavlink to="/combineplaylists">Playlist Combiner</StyledNavlink>
-                <StyledNavlink to="/developers">Developers</StyledNavlink>      
+                <Nav.Link href="/userstats">User Stats</Nav.Link>
+                <Nav.Link href="/combineplaylists">Playlist Combiner</Nav.Link>
+                <Nav.Link href="/developers">Developers</Nav.Link>
             </Nav>
         </Navbar.Collapse>
     </Navbar>

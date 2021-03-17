@@ -10,9 +10,7 @@ import { get, post } from '../utils/api';
 import scopes from '../utils/scopes';
 import Dropdown from '../components/Dropdown';
 
-// Spotify Auth package
-import { SpotifyAuth} from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css' // if using the included styles
+import Login from '../components/login';
 
 const CombineSuccess = styled.div`
     text-align: center;
@@ -354,14 +352,7 @@ function CombinePlaylists() {
                         <Row>
                             <Col>
 
-                            <div>
-                                <h5>Please login to use this feature!</h5>
-                                <SpotifyAuth
-                                    redirectUri='http://localhost:3000/redirect'
-                                    clientID='164e3321d4714ea2b1d88976aeecb258'
-                                    scopes={scopes}
-                                />
-                            </div>
+                            <Login/>
                             </Col>
                         </Row>
                         )}
