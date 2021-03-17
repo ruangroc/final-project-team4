@@ -30,6 +30,12 @@ function Developer() {
         "kristina": "https://www.linkedin.com/in/kristinaxlee/",
         "anita": "https://www.linkedin.com/in/anita-ruangrotsakun/"
     });
+
+    const [websiteSrc, setWebsiteSrc] = useState({
+        "thuyvy": "https://thuyvyng.github.io/",
+        "kristina": "https://kristinaxlee.github.io/",
+        "anita": "https://ruangroc.github.io/"
+    });
     const [devPlaylists, setDevPlaylists] = useState([]);
 
     const styles = css`
@@ -170,6 +176,8 @@ function Developer() {
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
                             <Card.Link className="white" href={githubSrc[developer]}> GitHub </Card.Link>
                             <Card.Link className="white" href={linkedinSrc[developer]}> Linkedin </Card.Link>
+                            <Card.Link className="white" href={websiteSrc[developer]}> Website </Card.Link>
+
                             </Card.Body>
                         </Card>)}
                     </Row>
