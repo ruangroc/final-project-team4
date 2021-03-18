@@ -320,10 +320,6 @@ function CombinePlaylists() {
                             />
                             </Col>
                             <Col>
-                             <img src="arrow.png" height = "80px" />
-                            
-                            </Col>
-                            <Col>
                                 <h2> Playlist 2 </h2>
                             <Dropdown
                                 options={playlists.playlistList}
