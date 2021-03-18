@@ -1,7 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Jumbotron } from 'react-bootstrap';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import { useSelector } from 'react-redux';
@@ -10,9 +10,7 @@ import { get, post } from '../utils/api';
 import scopes from '../utils/scopes';
 import Dropdown from '../components/Dropdown';
 
-// Spotify Auth package
-import { SpotifyAuth} from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css' // if using the included styles
+import Login from '../components/login';
 
 const CombineSuccess = styled.div`
     margin: 0 auto;
@@ -297,29 +295,21 @@ function CombinePlaylists() {
     const styles = css`
     .row {
         text-align: center;
-        margin-top: 1%;
-        margin-bottom: 1%;
     }
-`;
+    `;
 
     return (
         <>
         <Navigation/>
+        <Jumbotron>
+                <br></br>
+                <h1 style={{ textAlign: "center"}}> Combine your playlists</h1>
+                <p style={{textAlign: "center"}}> Add all unique songs from playlist 1 into playlist 2 </p>
+        </Jumbotron>
         <Container fluid css={styles}>
-            <Row>
-                <Col>
-                    <h1> Combine your playlists!</h1>
-                </Col>
-            </Row>
 
                     {loggedIn ? (
                         <>
-                        <Row>
-                            <Col>
-                            <h3>Merge all songs from playlist 1 into playlist 2 </h3>
-                            </Col>
-                        </Row>
-                        <hr></hr>
                         <Row>
                             <Col>
                             <h2> Playlist 1 </h2>
@@ -328,10 +318,6 @@ function CombinePlaylists() {
                                 value={playlists.selectedPlaylist2}
                                 change={changePlaylist2}
                             />
-                            </Col>
-                            <Col>
-                             <img src="arrow.png" height = "80px" />
-                            
                             </Col>
                             <Col>
                                 <h2> Playlist 2 </h2>
@@ -347,7 +333,7 @@ function CombinePlaylists() {
                             <br></br>
                             <br></br>
                                 <Button variant="success" onClick={combinePlaylists}>
-                                    <h2> Combine! </h2>
+                                    <h4> Combine! </h4>
                                 </Button>
                             </Col>
                         </Row>
@@ -366,14 +352,7 @@ function CombinePlaylists() {
                     ) : (
                         <Row>
                             <Col>
-                            <div>
-                                <h5>Please login to use this feature!</h5>
-                                <SpotifyAuth
-                                    redirectUri='http://localhost:3000/redirect'
-                                    clientID='164e3321d4714ea2b1d88976aeecb258'
-                                    scopes={scopes}
-                                />
-                            </div>
+                            <Login/>
                             </Col>
                         </Row>
                         )}

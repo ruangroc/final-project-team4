@@ -1,17 +1,14 @@
 /**@jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Button} from 'react-bootstrap';
+import {Container, Row, Col, Card, Button, Jumbotron} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import {Route,Switch,useParams,useRouteMatch, Redirect, Link} from 'react-router-dom';
 import { get } from '../utils/api';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
-import scopes from '../utils/scopes';
+import Login from '../components/login';
 
-// Spotify Auth package
-import { SpotifyAuth, Scopes } from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css' // if using the included styles
 
 function Developer() {
     const {developer} = useParams();
@@ -32,6 +29,12 @@ function Developer() {
         "thuyvy": "https://www.linkedin.com/in/thuyvyng/",
         "kristina": "https://www.linkedin.com/in/kristinaxlee/",
         "anita": "https://www.linkedin.com/in/anita-ruangrotsakun/"
+    });
+
+    const [websiteSrc, setWebsiteSrc] = useState({
+        "thuyvy": "https://thuyvyng.github.io/",
+        "kristina": "https://kristinaxlee.github.io/",
+        "anita": "https://ruangroc.github.io/"
     });
     const [devPlaylists, setDevPlaylists] = useState([]);
 
@@ -173,6 +176,8 @@ function Developer() {
                             {dev.followers && dev.followers.total && (<Card.Text> {dev.followers.total} Followers </Card.Text>)}
                             <Card.Link className="white" href={githubSrc[developer]}> GitHub </Card.Link>
                             <Card.Link className="white" href={linkedinSrc[developer]}> Linkedin </Card.Link>
+                            <Card.Link className="white" href={websiteSrc[developer]}> Website </Card.Link>
+
                             </Card.Body>
                         </Card>)}
                     </Row>
@@ -188,14 +193,7 @@ function Developer() {
                 </Col>
             </Row>) 
             : 
-            (<div>
-                <h5>Please login to use this feature!</h5>
-                <SpotifyAuth
-                    redirectUri='http://localhost:3000/redirect'
-                    clientID='164e3321d4714ea2b1d88976aeecb258'
-                    scopes={scopes}
-                />
-            </div>)
+            (<Login />)
         }
     </>);
   }
@@ -213,8 +211,6 @@ function Developers() {
     const styles = css`
         .header {
             text-align: center;
-            margin-top: 1%;
-            margin-bottom: 2%;
         }
         .card {
             width: 100%;
@@ -250,7 +246,11 @@ function Developers() {
                     <Col xs={7}>
                         <Row>
                             <Col>
+
+                                <br></br>
+                                <Jumbotron>
                                 <h1 className="header">Meet the Developers!</h1>
+                                </Jumbotron>
                             </Col>
                         </Row>
                         <Row>

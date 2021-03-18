@@ -4,11 +4,7 @@ import {Container, Row, Col, Jumbotron, Button} from 'react-bootstrap';
 
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
-import scopes from '../utils/scopes';
-
-// Spotify Auth package
-import { SpotifyAuth} from 'react-spotify-auth'
-import 'react-spotify-auth/dist/index.css' // if using the included styles
+import Login from '../components/login';
 
 export default function Home() {
 
@@ -17,13 +13,13 @@ export default function Home() {
     console.log("logged in: ", loggedIn);
 
     return (
-        <>
+        <div>
             <Navigation/>
             <Container >
                 <br></br>
 
                     <Jumbotron>
-                        <h1> Spotify Interactive </h1>
+                        <h1 style={{color: "#1aa34a", fontWeight: "bold"}}> Spotify Interactive </h1>
                         <p> Learn and interact with your Spotify music taste with statistics and cat visualizations. Find out what music the developers are listening to and combine your playlists with our playlist combiner feature. </p>
                         <br></br>
                         <br></br>
@@ -36,18 +32,11 @@ export default function Home() {
                             <div>
                             </div>
                         ) : (
-                                <div>
-                                    <h5>Please login:</h5>
-                                    <SpotifyAuth
-                                        redirectUri='http://localhost:3000/redirect'
-                                        clientID='164e3321d4714ea2b1d88976aeecb258'
-                                        scopes={scopes}
-                                    />
-                                </div>
+                                <Login />
                             )}
                     </Col>
                 </Row>
             </Container>
-        </>
+        </div>
     );
   }

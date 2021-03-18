@@ -1,17 +1,13 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
-import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup} from 'react-bootstrap';
+import {Container, Row, Col, Card, Tooltip, OverlayTrigger, Button, ButtonGroup, Jumbotron} from 'react-bootstrap';
 import {css} from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { getAuth } from '../redux/selectors';
-import scopes from '../utils/scopes';
 import { get } from '../utils/api';
 import { useState, useEffect } from 'react';
 
-
-// Spotify Auth package
-import { SpotifyAuth } from 'react-spotify-auth';
-import 'react-spotify-auth/dist/index.css'; // if using the included styles
+import Login from '../components/login';
 
 // next: add variable nose color, include the actual numbers in the tooltips
 
@@ -38,7 +34,6 @@ export default function UserStats() {
         }
         .card {
             background-color: #3BE378;
-            border: 1px #FFF solid;
             height: 100%;
             width: 100%;
             text-align: center;
@@ -516,12 +511,15 @@ export default function UserStats() {
     return (
     <>
         <Navigation/>
+        <Container>
+            <br></br>
+        <Jumbotron>
+            <h1 style={{ textAlign: "center"}}>Your Spotify Statistics</h1>
+            <p style={{ textAlign: "center"}}> Have a cat visualization created based on your spotify data! </p>
+        </Jumbotron>
+        </Container>
         {loggedIn ? 
         (<Container fluid css={styles}>
-            <Row>
-                <Col><h2 className="centered">Your Spotify Statistics</h2></Col>
-            </Row>
-
             <Row><h4 className="centered">Select timeframe for data:</h4></Row>
             <Row className="centered">
                 <Col></Col>
@@ -539,14 +537,9 @@ export default function UserStats() {
             <Row className="cards-container centered">{ topTracks !== {} ? displayTopTracks() : <p>Loading top tracks...</p> }</Row>
         </Container>) 
         : 
-        (<div>
-            <h5>Please login to use this feature!</h5>
-            <SpotifyAuth
-                redirectUri='http://localhost:3000/redirect'
-                clientID='164e3321d4714ea2b1d88976aeecb258'
-                scopes={scopes}
-            />
-        </div>)
+        ( <Container fluid css={styles}>
+            <Login />
+        </Container>)
         }
     </>
     );
