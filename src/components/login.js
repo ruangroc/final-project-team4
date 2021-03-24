@@ -9,7 +9,8 @@ function Login() {
     return (
     <div>
         <SpotifyAuth
-            redirectUri='http://localhost:3000/redirect'
+            // redirectUri='http://localhost:3000/redirect'
+            redirectUri='https://spotify-interactive.vercel.app/redirect'
             // clientID='164e3321d4714ea2b1d88976aeecb258'
             clientId={process.env.REACT_APP_API_KEY}
             scopes={scopes}
