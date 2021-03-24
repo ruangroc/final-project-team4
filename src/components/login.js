@@ -10,7 +10,8 @@ function Login() {
     <div>
         <SpotifyAuth
             redirectUri='http://localhost:3000/redirect'
-            clientID='164e3321d4714ea2b1d88976aeecb258'
+            // clientID='164e3321d4714ea2b1d88976aeecb258'
+            clientId={process.env.REACT_APP_API_KEY}
             scopes={scopes}
             title="Login into Spotify"
         />
