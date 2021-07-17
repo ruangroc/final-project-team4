@@ -161,10 +161,6 @@ export default function UserStats() {
         try{
             const url = `https://api.spotify.com/v1/me/top/artists?time_range=${dataTimeframe}`;
             let result = await get(url, { access_token: auth.accessToken });
-            // console.log("fetch top artists result:", result);
-            // keep only the non-null items
-            result = result.filter(x => x);
-            console.log("fetch top artists results filtered:", result);
             setTopArtists(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -178,10 +174,6 @@ export default function UserStats() {
         try{
             const url = `https://api.spotify.com/v1/me/top/tracks?time_range=${dataTimeframe}`;
             let result = await get(url, { access_token: auth.accessToken });
-            // console.log("fetch top tracks result:", result);
-            // keep only the non-null items
-            result = result.filter(x => x);
-            console.log("fetch top tracks results filtered:", result);
             setTopTracks(result || {});
         } catch (e){
             if ( e instanceof DOMException){
@@ -196,16 +188,18 @@ export default function UserStats() {
             return <p>Loading top artists...</p>
         }
         return topArtists.items.slice(0, 10).map(artist => {
-            return (
-                <Col lg={1} md={2} xs={3}>
-                    <Card key={artist.uri} className="card">
-                        <Card.Img src={(artist.images && artist.images.length >= 1 && artist.images[0]) ? artist.images[0].url : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"} />
-                        <h6>
-                            <a href={artist.external_urls.spotify} target="_blank" rel="noreferrer">{artist.name}</a>
-                        </h6>
-                    </Card>
-                </Col>
-            );
+            if (artist) {
+                return (
+                    <Col lg={1} md={2} xs={3}>
+                        <Card key={artist.uri} className="card">
+                            <Card.Img src={(artist.images && artist.images.length >= 1 && artist.images[0]) ? artist.images[0].url : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"} />
+                            <h6>
+                                <a href={artist.external_urls.spotify} target="_blank" rel="noreferrer">{artist.name}</a>
+                            </h6>
+                        </Card>
+                    </Col>
+                );
+            }
         });
     }
 
@@ -217,34 +211,38 @@ export default function UserStats() {
             <Col>
                 <Row>
                     {topTracks.items.slice(0, 5).map(song => {
-                        return (
-                            <Col>
-                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
-                                    <h6>
-                                        <a href={song.external_urls.spotify} target="_blank" rel="noreferrer">
-                                            <img className="song-image" alt="" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
-                                            {song.name}
-                                        </a>
-                                    </h6>
-                                </Card>
-                            </Col>
-                        );
+                        if (song) {
+                            return (
+                                <Col>
+                                    <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                        <h6>
+                                            <a href={song.external_urls.spotify} target="_blank" rel="noreferrer">
+                                                <img className="song-image" alt="" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                                {song.name}
+                                            </a>
+                                        </h6>
+                                    </Card>
+                                </Col>
+                            );
+                        }
                     })}
                 </Row>
                 <Row>
                     {topTracks.items.slice(5, 10).map(song => {
-                        return (
-                            <Col>
-                                <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
-                                    <h6>
-                                        <a href={song.external_urls.spotify} target="_blank" rel="noreferrer">
-                                            <img className="song-image" alt="" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
-                                            {song.name}
-                                        </a>
-                                    </h6>
-                                </Card>
-                            </Col>
-                        );
+                        if (song) {
+                            return (
+                                <Col>
+                                    <Card key={song.uri} className="card" style={{textAlign: 'left'}}>
+                                        <h6>
+                                            <a href={song.external_urls.spotify} target="_blank" rel="noreferrer">
+                                                <img className="song-image" alt="" src="http://cdn.onlinewebfonts.com/svg/img_82197.png"/>
+                                                {song.name}
+                                            </a>
+                                        </h6>
+                                    </Card>
+                                </Col>
+                            );
+                        }
                     })}
                 </Row>
             </Col>
