@@ -2,7 +2,6 @@ import axios from 'axios';
 import { setAuthHeader } from './functions';
 
 export const get = async (url, params) => {
-  console.log("what does get receive?", url, params);
   setAuthHeader(params);
   const result = await axios.get(url, params);
   return result.data;

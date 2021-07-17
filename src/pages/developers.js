@@ -14,7 +14,7 @@ function Developer() {
     const {developer} = useParams();
     const [dev, setDev] = useState([]);
     const [imageSrc, setImageSrc] =  useState({
-        "thuyvy": "http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg",
+        "thuyvy": "https://tse1.mm.bing.net/th?id=OIP.uW3kFSo4__DcR9zqy-_TDQHaFZ&pid=Api",
         "kristina": "https://ih0.redbubble.net/image.60088184.6145/flat,1000x1000,075,f.u2.jpg",
         "anita": "http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg"
     });
@@ -148,7 +148,7 @@ function Developer() {
         return devPlaylists.map(item => {
             return (
                 <Card key={item.name} css={styles}>
-                    <Card.Title> <a href={`https://open.spotify.com/playlist/${item.id}`} target="_blank">{item.name}</a> </Card.Title>
+                    <Card.Title> <a href={`https://open.spotify.com/playlist/${item.id}`} target="_blank" rel="noreferrer">{item.name}</a> </Card.Title>
                     <Card.Img src={item.images.length ? item.images[0].url : "https://img.talkandroid.com/uploads/2016/01/spotify-app-logo-450x450.png"} />
                 </Card>
             );
@@ -203,7 +203,7 @@ function Developers() {
     const match = useRouteMatch();
     const { url, path } = match;
     const imageSrc =  {
-        "thuyvy": "http://allaboutcat.org/wp-content/uploads/2017/09/cat-sticking-tongue-out-2.jpg",
+        "thuyvy": "https://tse1.mm.bing.net/th?id=OIP.uW3kFSo4__DcR9zqy-_TDQHaFZ&pid=Api",
         "kristina": "https://ih0.redbubble.net/image.60088184.6145/flat,1000x1000,075,f.u2.jpg",
         "anita": "http://3.bp.blogspot.com/--7gtJQo5mHE/UGMKHZapqmI/AAAAAAAAWGU/5X26Pgj_St4/s1600/funny-cat-pictures-017-005.jpg"
     };
