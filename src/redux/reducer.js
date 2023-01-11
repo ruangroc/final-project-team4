@@ -1,14 +1,12 @@
-import { combineReducers } from 'redux';
-import {
-  LOG_IN,
-} from './actions';
+import { combineReducers } from "redux";
+import { LOG_IN } from "./actions";
 
 const authInitialState = {
-  loggedIn: false
-}
+  loggedIn: false,
+};
 
 function authReducer(state = authInitialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case LOG_IN:
       console.log("action in reducer: ", action);
       return {
@@ -16,7 +14,7 @@ function authReducer(state = authInitialState, action) {
         accessToken: JSON.parse(action.accessToken).access_token,
         loggedIn: true,
       };
-      
+
     default:
       return state;
   }
@@ -25,6 +23,6 @@ function authReducer(state = authInitialState, action) {
 const rootReducer = combineReducers({
   auth: authReducer,
   // add more reducers here
-})
+});
 
 export default rootReducer;

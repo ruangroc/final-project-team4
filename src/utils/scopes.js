@@ -1,4 +1,4 @@
-import { Scopes } from 'react-spotify-auth';
+import { Scopes } from "react-spotify-auth";
 
 const scopes = [
   Scopes.userReadPrivate,
@@ -7,7 +7,7 @@ const scopes = [
   Scopes.playlistReadPrivate,
   Scopes.playlistModifyPrivate,
   Scopes.playlistModifyPublic,
-  Scopes.userTopRead
+  Scopes.userTopRead,
 ];
 
 export default scopes;
