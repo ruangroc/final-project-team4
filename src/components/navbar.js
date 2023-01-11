@@ -22,14 +22,14 @@ export default function Navigation() {
         }}
         href="/"
       >
-        Feline Groovy
+        unpaws the music
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto"></Nav>
         <Nav>
-          <Nav.Link href="/userstats">cat-ify your spotify</Nav.Link>
-          <Nav.Link href="/combineplaylists">conCAT playlists</Nav.Link>
+          <Nav.Link href="/userstats">spotify purrsona</Nav.Link>
+          <Nav.Link href="/combineplaylists">concat playlists</Nav.Link>
           <Nav.Link href="/developers">about</Nav.Link>
         </Nav>
       </Navbar.Collapse>

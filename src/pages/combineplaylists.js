@@ -306,10 +306,9 @@ function CombinePlaylists() {
       <Navigation />
       <Jumbotron>
         <br></br>
-        <h1 style={{ textAlign: "center" }}> conCAT your playlists</h1>
+        <h1 style={{ textAlign: "center" }}> concat your playlists</h1>
         <p style={{ textAlign: "center" }}>
-          {" "}
-          Add all unique songs from playlist 1 into playlist 2{" "}
+          Add all unique songs from playlist 1 into playlist 2
         </p>
       </Jumbotron>
       <Container fluid css={styles}>

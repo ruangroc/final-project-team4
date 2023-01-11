@@ -30,14 +30,12 @@ export default function Home() {
               fontSize: "xxx-large",
             }}
           >
-            {" "}
-            feline' groovy{" "}
+            unpaws the music
           </h1>
           <p>
-            {" "}
             Learn and interact with your Spotify music taste with statistics and
             cat visualizations. Find out what music the developers are listening
-            to and combine your playlists with our playlist combiner feature.{" "}
+            to and combine your playlists with our playlist combiner feature.
           </p>
           <br></br>
           <br></br>
@@ -45,7 +43,7 @@ export default function Home() {
             variant="outline-success"
             href="https://github.com/osu-cs499-w21/final-project-team4"
           >
-            Github{" "}
+            Github
           </Button>
         </Jumbotron>
 
