@@ -339,14 +339,14 @@ function CombinePlaylists() {
                 <br></br>
                 <br></br>
                 <Button variant="success" onClick={combinePlaylists}>
-                  <h4> Combine! </h4>
+                  concat
                 </Button>
               </Col>
             </Row>
             {success && (
               <CombineSuccess>
                 <strong>Success!</strong> View your newly updated playlist
-                <a href={playlists.combinedPlaylistLink}>here</a>
+                <a href={playlists.combinedPlaylistLink}> here</a>
                 <button
                   type="button"
                   class="close"
