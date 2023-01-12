@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import { Card, Row, CardGroup, CardDeck } from "react-bootstrap";
+import { Card, CardGroup } from "react-bootstrap";
 import { get } from "../utils/api";
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";

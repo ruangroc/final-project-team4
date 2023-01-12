@@ -1,5 +1,5 @@
 /**@jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "../components/navbar";
 import { Container, Row, Col, Button, Jumbotron } from "react-bootstrap";
 import { css } from "@emotion/react";
@@ -7,7 +7,6 @@ import styled from "@emotion/styled/macro";
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";
 import { get, post } from "../utils/api";
-import scopes from "../utils/scopes";
 import Dropdown from "../components/Dropdown";
 
 import Login from "../components/login";
