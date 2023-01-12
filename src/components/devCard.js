@@ -132,7 +132,7 @@ function DevCard(props) {
           rel="noreferrer"
         >
           <Card.Title>
-            <h2> {dev.display_name} </h2>
+            <h3> {dev.display_name} </h3>
           </Card.Title>
           <Card.Img
             src={
@@ -141,7 +141,7 @@ function DevCard(props) {
                 : imageSrc[props.dev]
             }
             className="dev-image"
-            style={{ maxWidth: "40%" }}
+            style={{ maxWidth: "35%" }}
           />
         </a>
         <br></br>
@@ -153,7 +153,7 @@ function DevCard(props) {
           </CardGroup>
         ) : (
           <p>"Loading playlists..."</p>
-        )}{" "}
+        )}
       </Card.Body>
       <Card.Footer>
         <Card.Link href={githubSrc[props.dev]}>GitHub</Card.Link>

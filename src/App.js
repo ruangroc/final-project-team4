@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logIn } from "./redux/actions";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Cookies from "js-cookie";
 import "./App.css";
 

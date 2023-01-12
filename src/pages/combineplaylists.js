@@ -306,8 +306,10 @@ function CombinePlaylists() {
       <Navigation />
       <Jumbotron>
         <br></br>
-        <h1 style={{ textAlign: "center" }}> concat your playlists</h1>
-        <p style={{ textAlign: "center" }}>
+        <h1 class="display-3" style={{ textAlign: "center" }}>
+          concat your playlists
+        </h1>
+        <p class="lead" style={{ textAlign: "center" }}>
           Add all unique songs from playlist 1 into playlist 2
         </p>
       </Jumbotron>
@@ -343,7 +345,7 @@ function CombinePlaylists() {
             </Row>
             {success && (
               <CombineSuccess>
-                <strong>Success!</strong> View your newly updated playlist{" "}
+                <strong>Success!</strong> View your newly updated playlist
                 <a href={playlists.combinedPlaylistLink}>here</a>
                 <button
                   type="button"
