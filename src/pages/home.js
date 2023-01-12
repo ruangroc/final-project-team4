@@ -1,6 +1,6 @@
 import Navigation from "../components/navbar";
 
-import { Container, Row, Col, Jumbotron, Button } from "react-bootstrap";
+import { Container, Row, Col, Jumbotron } from "react-bootstrap";
 
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";
@@ -19,32 +19,24 @@ export default function Home() {
 
         <Jumbotron
           style={{
-            backgroundColor: "#FFFFD7",
+            backgroundColor: "white",
           }}
         >
           <h1
             style={{
-              color: "#54BEDC",
+              color: "#84A59D",
               fontWeight: "bold",
               fontFamily: "Coiny",
-              fontSize: "xxx-large",
+              fontSize: "10vw",
             }}
           >
             unpaws the music
           </h1>
-          <p>
-            Learn and interact with your Spotify music taste with statistics and
-            cat visualizations. Find out what music the developers are listening
-            to and combine your playlists with our playlist combiner feature.
+          <p class="lead">
+            Find out what kind of cat your music tastes create, learn more about
+            your music habits, and combine your playlists with our playlist
+            combiner feature here!
           </p>
-          <br></br>
-          <br></br>
-          <Button
-            variant="outline-success"
-            href="https://github.com/osu-cs499-w21/final-project-team4"
-          >
-            Github
-          </Button>
         </Jumbotron>
 
         <Row>

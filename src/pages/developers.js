@@ -148,14 +148,13 @@ function Developer() {
       return (
         <Card key={item.name} css={styles}>
           <Card.Title>
-            {" "}
             <a
               href={`https://open.spotify.com/playlist/${item.id}`}
               target="_blank"
               rel="noreferrer"
             >
               {item.name}
-            </a>{" "}
+            </a>
           </Card.Title>
           <Card.Img
             src={
@@ -179,18 +178,14 @@ function Developer() {
               <h5>Developers </h5>
             </Row>
             <Link to="/developers/anita">
-              {" "}
               <Button variant="secondary" className="side-button">
-                {" "}
-                <h6> Anita</h6>{" "}
-              </Button>{" "}
+                <h6> Anita</h6>
+              </Button>
             </Link>
             <Link to="/developers/thuyvy">
-              {" "}
               <Button variant="secondary" className="side-button">
-                {" "}
-                <h6> ThuyVy</h6>{" "}
-              </Button>{" "}
+                <h6> ThuyVy</h6>
+              </Button>
             </Link>
           </Col>
           <Col lg={2} xs={6}>
@@ -214,16 +209,13 @@ function Developer() {
                       <Card.Text> {dev.followers.total} Followers </Card.Text>
                     )}
                     <Card.Link className="white" href={githubSrc[developer]}>
-                      {" "}
-                      GitHub{" "}
+                      GitHub
                     </Card.Link>
                     <Card.Link className="white" href={linkedinSrc[developer]}>
-                      {" "}
-                      Linkedin{" "}
+                      Linkedin
                     </Card.Link>
                     <Card.Link className="white" href={websiteSrc[developer]}>
-                      {" "}
-                      Website{" "}
+                      Website
                     </Card.Link>
                   </Card.Body>
                 </Card>
@@ -297,11 +289,36 @@ function Developers() {
   return (
     <>
       <Navigation />
-      <Jumbotron>
-        <h1 className="header" style={{ textAlign: "center" }}>
-          {" "}
-          about the project
-        </h1>
+      <Jumbotron style={{ textAlign: "center" }}>
+        <h1 class="display-4">about</h1>
+        <br></br>
+        <p class="lead">
+          For our web development final, we asked ourselves how to make our
+          professor laugh during the demo. The answer: add a dancing cat.
+        </p>
+        <p>
+          We've made some updates since then but we know it's all about the
+          cats.
+        </p>
+        <br></br>
+        <a
+          href="https://github.com/thuyvyng/spotifyInteractive"
+          class="badge badge-info"
+        >
+          Github
+        </a>{" "}
+        <a
+          href="https://developer.spotify.com/documentation/web-api/"
+          class="badge badge-info"
+        >
+          SpotifyAPI
+        </a>{" "}
+        <a
+          href="https://open.spotify.com/playlist/4YBShIMxSyiNX4M9q6dcxc?si=3c41c386b6454fcc"
+          class="badge badge-info"
+        >
+          OurSpotifyPlaylist
+        </a>
       </Jumbotron>
       <Container fluid css={styles}>
         <Switch>

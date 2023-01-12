@@ -1,11 +1,8 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
 import { Container, Row, Col } from "react-bootstrap";
-import { css } from "@emotion/react";
-import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";
-import scopes from "../utils/scopes";
 
 import Login from "../components/login";
 
