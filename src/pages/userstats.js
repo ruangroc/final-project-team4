@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";
 import { get } from "../utils/api";
 import { useState, useEffect } from "react";
-
+import { isEqual } from "lodash";
 import Login from "../components/login";
 
 // next: add variable nose color, include the actual numbers in the tooltips
@@ -163,6 +163,8 @@ export default function UserStats() {
 
   const [topArtists, setTopArtists] = useState({});
   const [topTracks, setTopTracks] = useState({});
+  const [songPlaying, setSongPlaying] = useState({});
+
   const [audioFeatures, setAudioFeatures] = useState({});
   const [dataTimeframe, setDataTimeframe] = useState("short_term");
 
@@ -273,16 +275,26 @@ export default function UserStats() {
                     style={{ textAlign: "left" }}
                   >
                     <h6>
+                      <img
+                        className="song-image"
+                        alt=""
+                        src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
+                        onClick={() => {
+                          if (isEqual(songPlaying, {}) == false) {
+                            songPlaying.pause();
+                            setSongPlaying({});
+                          }
+                          let s = new Audio(song.preview_url);
+                          setSongPlaying(s);
+
+                          s.play();
+                        }}
+                      />
                       <a
                         href={song.external_urls.spotify}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
-                          className="song-image"
-                          alt=""
-                          src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
-                        />
                         {song.name}
                       </a>
                     </h6>
@@ -303,16 +315,26 @@ export default function UserStats() {
                     style={{ textAlign: "left" }}
                   >
                     <h6>
+                      <img
+                        className="song-image"
+                        alt=""
+                        src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
+                        onClick={() => {
+                          if (isEqual(songPlaying, {}) == false) {
+                            songPlaying.pause();
+                            setSongPlaying({});
+                          }
+                          let s = new Audio(song.preview_url);
+                          setSongPlaying(s);
+
+                          s.play();
+                        }}
+                      />
                       <a
                         href={song.external_urls.spotify}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
-                          className="song-image"
-                          alt=""
-                          src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
-                        />
                         {song.name}
                       </a>
                     </h6>
