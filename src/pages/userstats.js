@@ -39,7 +39,7 @@ export default function UserStats() {
       margin: 1%;
     }
     .song-image {
-      width: 8%;
+      width: 10%;
       margin: 1%;
     }
     .card {
@@ -258,6 +258,20 @@ export default function UserStats() {
     });
   }
 
+  function playMusic(song) {
+    let s = new Audio(song.preview_url);
+    if (isEqual(songPlaying.src, s.src) == true) {
+      songPlaying.pause();
+      setSongPlaying({});
+      return;
+    } else if (isEqual(songPlaying, {}) == false) {
+      songPlaying.pause();
+      setSongPlaying({});
+    }
+    setSongPlaying(s);
+    s.play();
+  }
+
   function displayTopTracks() {
     if (topTracks.items === undefined) {
       return <p>Loading top tracks...</p>;
@@ -278,16 +292,9 @@ export default function UserStats() {
                       <img
                         className="song-image"
                         alt=""
-                        src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
+                        src={song.album.images[0].url}
                         onClick={() => {
-                          if (isEqual(songPlaying, {}) == false) {
-                            songPlaying.pause();
-                            setSongPlaying({});
-                          }
-                          let s = new Audio(song.preview_url);
-                          setSongPlaying(s);
-
-                          s.play();
+                          playMusic(song);
                         }}
                       />
                       <a
@@ -318,16 +325,9 @@ export default function UserStats() {
                       <img
                         className="song-image"
                         alt=""
-                        src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
+                        src={song.album.images[0].url}
                         onClick={() => {
-                          if (isEqual(songPlaying, {}) == false) {
-                            songPlaying.pause();
-                            setSongPlaying({});
-                          }
-                          let s = new Audio(song.preview_url);
-                          setSongPlaying(s);
-
-                          s.play();
+                          playMusic(song);
                         }}
                       />
                       <a
