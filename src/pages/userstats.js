@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { getAuth } from "../redux/selectors";
 import { get } from "../utils/api";
 import { useState, useEffect } from "react";
-
+import { isEqual } from "lodash";
 import Login from "../components/login";
 
 // next: add variable nose color, include the actual numbers in the tooltips
@@ -39,9 +39,17 @@ export default function UserStats() {
       margin: 1%;
     }
     .song-image {
-      width: 8%;
+      width: 10%;
       margin: 1%;
+      opacity: 0.6;
     }
+
+    .song-image-selected {
+      width: 10%;
+      margin: 1%;
+      opacity: 1;
+    }
+
     .card {
       background-color: #3be378;
       height: 100%;
@@ -162,6 +170,8 @@ export default function UserStats() {
 
   const [topArtists, setTopArtists] = useState({});
   const [topTracks, setTopTracks] = useState({});
+  const [songPlaying, setSongPlaying] = useState({});
+
   const [audioFeatures, setAudioFeatures] = useState({});
   const [dataTimeframe, setDataTimeframe] = useState("short_term");
 
@@ -255,6 +265,20 @@ export default function UserStats() {
     });
   }
 
+  function playMusic(song) {
+    let s = new Audio(song.preview_url);
+    if (isEqual(songPlaying.src, s.src) == true) {
+      songPlaying.pause();
+      setSongPlaying({});
+      return;
+    } else if (isEqual(songPlaying, {}) == false) {
+      songPlaying.pause();
+      setSongPlaying({});
+    }
+    setSongPlaying(s);
+    s.play();
+  }
+
   function displayTopTracks() {
     if (topTracks.items === undefined) {
       return <p>Loading top tracks...</p>;
@@ -272,16 +296,23 @@ export default function UserStats() {
                     style={{ textAlign: "left" }}
                   >
                     <h6>
+                      <img
+                        className={
+                          songPlaying.src === song.preview_url
+                            ? "song-image-selected"
+                            : "song-image"
+                        }
+                        alt=""
+                        src={song.album.images[0].url}
+                        onClick={() => {
+                          playMusic(song);
+                        }}
+                      />
                       <a
                         href={song.external_urls.spotify}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
-                          className="song-image"
-                          alt=""
-                          src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
-                        />
                         {song.name}
                       </a>
                     </h6>
@@ -302,16 +333,23 @@ export default function UserStats() {
                     style={{ textAlign: "left" }}
                   >
                     <h6>
+                      <img
+                        className={
+                          songPlaying.src === song.preview_url
+                            ? "song-image-selected"
+                            : "song-image"
+                        }
+                        alt=""
+                        src={song.album.images[0].url}
+                        onClick={() => {
+                          playMusic(song);
+                        }}
+                      />
                       <a
                         href={song.external_urls.spotify}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
-                          className="song-image"
-                          alt=""
-                          src="http://cdn.onlinewebfonts.com/svg/img_82197.png"
-                        />
                         {song.name}
                       </a>
                     </h6>
