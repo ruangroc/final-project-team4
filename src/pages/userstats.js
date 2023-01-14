@@ -41,7 +41,15 @@ export default function UserStats() {
     .song-image {
       width: 10%;
       margin: 1%;
+      opacity: 0.6;
     }
+
+    .song-image-selected {
+      width: 10%;
+      margin: 1%;
+      opacity: 1;
+    }
+
     .card {
       background-color: #3be378;
       height: 100%;
@@ -290,7 +298,11 @@ export default function UserStats() {
                   >
                     <h6>
                       <img
-                        className="song-image"
+                        className={
+                          songPlaying.src === song.preview_url
+                            ? "song-image-selected"
+                            : "song-image"
+                        }
                         alt=""
                         src={song.album.images[0].url}
                         onClick={() => {
@@ -323,7 +335,11 @@ export default function UserStats() {
                   >
                     <h6>
                       <img
-                        className="song-image"
+                        className={
+                          songPlaying.src === song.preview_url
+                            ? "song-image-selected"
+                            : "song-image"
+                        }
                         alt=""
                         src={song.album.images[0].url}
                         onClick={() => {
