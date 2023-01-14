@@ -60,14 +60,13 @@ export default function UserStats() {
     }
     .active-button {
       background-color: #3be378;
-      border: 1px #3be378 solid;
       height: 100%;
       width: 100%;
       text-align: center;
       color: white;
     }
     #cat-container {
-      width: 50%;
+      width: 90%;
       height: 100%;
       margin: auto;
     }
@@ -231,7 +230,7 @@ export default function UserStats() {
     return topArtists.items.slice(0, 10).map((artist) => {
       if (artist) {
         return (
-          <Col lg={1} md={2} xs={3}>
+          <Col xl={1} lg={2} md={2} xs={6}>
             <Card key={artist.uri} className="card">
               <Card.Img
                 src={
@@ -262,11 +261,11 @@ export default function UserStats() {
     }
     return (
       <Col>
-        <Row>
+        <Row className="centered">
           {topTracks.items.slice(0, 5).map((song) => {
             if (song) {
               return (
-                <Col>
+                <Col xs={12} md={8} lg={2}>
                   <Card
                     key={song.uri}
                     className="card"
@@ -292,11 +291,11 @@ export default function UserStats() {
             }
           })}
         </Row>
-        <Row>
+        <Row className="centered">
           {topTracks.items.slice(5, 10).map((song) => {
             if (song) {
               return (
-                <Col>
+                <Col xs={12} md={8} lg={2}>
                   <Card
                     key={song.uri}
                     className="card"
@@ -470,7 +469,7 @@ export default function UserStats() {
           <Row className="centered">
             {tooltipTitles.slice(0, 3).map((title, i) => {
               return (
-                <Col xs={2}>
+                <Col xs={12} md={4}>
                   <OverlayTrigger
                     placement="bottom"
                     overlay={explanationTooltip(explanations[i])}
@@ -486,7 +485,7 @@ export default function UserStats() {
           <Row className="centered">
             {tooltipTitles.slice(3, 6).map((title, i) => {
               return (
-                <Col xs={2}>
+                <Col xs={12} md={4}>
                   <OverlayTrigger
                     placement="bottom"
                     overlay={explanationTooltip(explanations[i + 3])}
@@ -620,7 +619,7 @@ export default function UserStats() {
 
   function displayTimeframeButtons() {
     return (
-      <Col lg={4}>
+      <Col xs={11} md={8} lg={8}>
         <ButtonGroup style={{ width: "100%" }}>
           <OverlayTrigger
             placement="bottom"
@@ -678,7 +677,7 @@ export default function UserStats() {
       <Container>
         <br></br>
         <Jumbotron style={{ textAlign: "center" }}>
-          <h1 class="display-4">Your Spotify Statistics</h1>
+          <h1 class="display-4">Your Spotify Purrsona</h1>
           <p class="lead">
             Have a cat visualization created based on your spotify data!
           </p>
