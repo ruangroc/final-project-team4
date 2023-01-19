@@ -9,7 +9,8 @@ import {
   Button,
   ButtonGroup,
   Jumbotron,
-  Container,
+  Tabs,
+  Tab,
 } from "react-bootstrap";
 import { css } from "@emotion/react";
 import { useSelector } from "react-redux";
@@ -103,6 +104,7 @@ export default function UserStats() {
       margin: 0px;
       display: inline-block;
     }
+
     #right-eye {
       width: 15px;
       height: 20px;
@@ -437,9 +439,10 @@ export default function UserStats() {
 
   function catVisTooltips() {
     const tooltipTitles = [
+      "*",
       "Background Colors",
       "Background Opacity",
-      "Cat Color",
+      "Color",
       "Tongue",
       "Ears",
       "Whiskers",
@@ -452,6 +455,9 @@ export default function UserStats() {
     let averageEnergy = average(energyArray).toFixed(2);
     let minEnergy = Math.min(...energyArray).toFixed(2);
     let maxEnergy = Math.max(...energyArray).toFixed(2);
+
+    const home =
+      "Curious about your cat? Learn more by clicking the attributes. ";
     const background =
       "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy, red = low energy)." +
       "\nYour min: " +
@@ -497,6 +503,7 @@ export default function UserStats() {
       averageDuration +
       " seconds";
     const explanations = [
+      home,
       background,
       opacity,
       catColor,
@@ -504,43 +511,34 @@ export default function UserStats() {
       ears,
       whiskers,
     ];
+
     return (
-      <Row className="explanations">
-        <Col>
-          <Row className="centered">
-            {tooltipTitles.slice(0, 3).map((title, i) => {
-              return (
-                <Col xs={12} md={4}>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={explanationTooltip(explanations[i])}
-                  >
-                    <Card className="card">
-                      <h6>{title}</h6>
-                    </Card>
-                  </OverlayTrigger>
-                </Col>
-              );
-            })}
-          </Row>
-          <Row className="centered">
-            {tooltipTitles.slice(3, 6).map((title, i) => {
-              return (
-                <Col xs={12} md={4}>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={explanationTooltip(explanations[i + 3])}
-                  >
-                    <Card className="card">
-                      <h6>{title}</h6>
-                    </Card>
-                  </OverlayTrigger>
-                </Col>
-              );
-            })}
-          </Row>
-        </Col>
-      </Row>
+      <div
+        style={{
+          margin: "10px",
+          padding: "15px",
+          border: "1px solid #d3d3d3",
+          borderRadius: "20px",
+        }}
+      >
+        <h4> Cat Characteristics </h4>
+
+        <br></br>
+
+        <Tabs>
+          {tooltipTitles.map((title, i) => {
+            return (
+              <Tab
+                eventKey={title}
+                title={title}
+                style={{ paddingTop: "10px" }}
+              >
+                <blockquote>{explanations[i]}</blockquote>
+              </Tab>
+            );
+          })}
+        </Tabs>
+      </div>
     );
   }
 
@@ -725,7 +723,7 @@ export default function UserStats() {
           ) : (
             <>
               <Jumbotron>
-                <h1 class="display-4">Your Purrsona</h1>
+                <h1 class="display-3">Your Purrsona</h1>
                 <p class="lead">
                   Have a cat visualization created based on your spotify data!
                 </p>
@@ -733,13 +731,9 @@ export default function UserStats() {
             </>
           )}
         </Col>
-        <Col style={{ padding: "0px" }}>
+        <Col>
           {loggedIn ? (
             <>
-              <h4 className="centered"> Cat Characteristics: </h4>
-              <p class="lead centered">
-                Curious about your cat? Learn how we made your cat below.
-              </p>
               <Row>{catVisTooltips()}</Row>
               <Row>
                 <Col>

@@ -9,9 +9,15 @@ export default function Navigation() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto"></Nav>
         <Nav>
-          <Nav.Link href="/userstats"> purrsona</Nav.Link>
-          <Nav.Link href="/combineplaylists">concat playlists</Nav.Link>
-          <Nav.Link href="/developers">about</Nav.Link>
+          <Nav.Link style={{ color: "#f7ede2" }} href="/userstats">
+            purrsona
+          </Nav.Link>
+          <Nav.Link style={{ color: "#f7ede2" }} href="/combineplaylists">
+            concat playlists
+          </Nav.Link>
+          <Nav.Link style={{ color: "#f7ede2" }} href="/developers">
+            about
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
