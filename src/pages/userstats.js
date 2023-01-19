@@ -9,6 +9,7 @@ import {
   Button,
   ButtonGroup,
   Jumbotron,
+  Container,
 } from "react-bootstrap";
 import { css } from "@emotion/react";
 import { useSelector } from "react-redux";
@@ -42,7 +43,7 @@ export default function UserStats() {
     }
 
     .card {
-      background-color: #3be378;
+      background-color: #e7f2f8;
       height: 100%;
       width: 100%;
       text-align: left;
@@ -73,7 +74,7 @@ export default function UserStats() {
       justify-content: center;
     }
     .active-button {
-      background-color: #3be378;
+      background-color: #84a59d;
       height: 100%;
       width: 100%;
       text-align: center;
@@ -600,6 +601,13 @@ export default function UserStats() {
 
       return (
         <div id="cat-container" style={containerCss}>
+          <Jumbotron>
+            <h1 class="display-4">Your Purrsona</h1>
+            <p class="lead">
+              Have a cat visualization created based on your spotify data!
+            </p>
+          </Jumbotron>
+
           <div id="head" style={headCss}>
             <div id="left-eye" />
             <div id="right-eye" />
@@ -680,13 +688,21 @@ export default function UserStats() {
       <Navigation />
 
       <Row css={styles}>
-        <Col style={{ backgroundColor: "#FCF7F1" }}>
-          <Jumbotron style={{ backgroundColor: "#FCF7F1" }}>
-            <h1 class="display-4">Your Spotify Purrsona</h1>
-            <p class="lead">
-              Have a cat visualization created based on your spotify data!
-            </p>
-          </Jumbotron>
+        <Col style={{ backgroundColor: "white" }}>
+          {loggedIn ? (
+            displayCatVis()
+          ) : (
+            <>
+              <Jumbotron>
+                <h1 class="display-4">Your Purrsona</h1>
+                <p class="lead">
+                  Have a cat visualization created based on your spotify data!
+                </p>
+              </Jumbotron>
+            </>
+          )}
+        </Col>
+        <Col style={{ padding: "0px" }}>
           {loggedIn ? (
             <>
               <Row className="centered">{displayTimeframeButtons()}</Row>
@@ -719,9 +735,6 @@ export default function UserStats() {
               <Login />
             </>
           )}
-        </Col>
-        <Col style={{ padding: "0px" }}>
-          {loggedIn ? displayCatVis() : <></>}
         </Col>
       </Row>
     </>
