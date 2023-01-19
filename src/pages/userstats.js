@@ -1,7 +1,6 @@
 /**@jsxImportSource @emotion/react */
 import Navigation from "../components/navbar";
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -10,6 +9,7 @@ import {
   Button,
   ButtonGroup,
   Jumbotron,
+  Container,
 } from "react-bootstrap";
 import { css } from "@emotion/react";
 import { useSelector } from "react-redux";
@@ -19,8 +19,6 @@ import { useState, useEffect } from "react";
 import { isEqual } from "lodash";
 import Login from "../components/login";
 
-// next: add variable nose color, include the actual numbers in the tooltips
-
 export default function UserStats() {
   const styles = css`
     a {
@@ -29,37 +27,46 @@ export default function UserStats() {
     h4 {
       margin: 1%;
     }
-    h5 {
-      margin: 0;
-      margin-left: 2%;
-      text-align: left;
-    }
+
     h6 {
       padding: 5px;
       margin: 1%;
     }
-    .song-image {
-      width: 10%;
-      margin: 1%;
+    .card-image {
+      width: 70px;
       opacity: 0.6;
     }
 
-    .song-image-selected {
-      width: 10%;
-      margin: 1%;
+    .card-image-selected {
+      width: 70px;
       opacity: 1;
     }
 
     .card {
-      background-color: #3be378;
+      background-color: #e7f2f8;
       height: 100%;
       width: 100%;
-      text-align: center;
+      text-align: left;
       color: black;
     }
+
+    .cardImg {
+      object-fit: cover;
+      width: 70px;
+      height: 70px;
+    }
+
+    .cardImgArtist {
+      object-fit: cover;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+
     .cards-container {
       padding-left: 1%;
       padding-right: 1%;
+      list-style: none;
     }
     .centered {
       margin: 1% auto;
@@ -67,16 +74,17 @@ export default function UserStats() {
       justify-content: center;
     }
     .active-button {
-      background-color: #3be378;
+      background-color: #84a59d;
       height: 100%;
       width: 100%;
       text-align: center;
       color: white;
     }
     #cat-container {
-      width: 90%;
+      width: 100%;
       height: 100%;
-      margin: auto;
+      margin: 0px;
+      padding: 0px;
     }
     #left-eye {
       width: 15px;
@@ -240,16 +248,19 @@ export default function UserStats() {
     return topArtists.items.slice(0, 10).map((artist) => {
       if (artist) {
         return (
-          <Col xl={1} lg={2} md={2} xs={6}>
+          <li>
             <Card key={artist.uri} className="card">
-              <Card.Img
-                src={
-                  artist.images && artist.images.length >= 1 && artist.images[0]
-                    ? artist.images[0].url
-                    : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"
-                }
-              />
               <h6>
+                <img
+                  className="cardImgArtist"
+                  src={
+                    artist.images &&
+                    artist.images.length >= 1 &&
+                    artist.images[0]
+                      ? artist.images[0].url
+                      : "https://tse2.mm.bing.net/th?id=OIP.Z0UUFwBFho8rhsr3Z8kMJQHaHa&pid=Api"
+                  }
+                />
                 <a
                   href={artist.external_urls.spotify}
                   target="_blank"
@@ -259,7 +270,7 @@ export default function UserStats() {
                 </a>
               </h6>
             </Card>
-          </Col>
+          </li>
         );
       }
     });
@@ -284,82 +295,39 @@ export default function UserStats() {
       return <p>Loading top tracks...</p>;
     }
     return (
-      <Col>
-        <Row className="centered">
-          {topTracks.items.slice(0, 5).map((song) => {
-            if (song) {
-              return (
-                <Col xs={12} md={8} lg={2}>
-                  <Card
-                    key={song.uri}
-                    className="card"
-                    style={{ textAlign: "left" }}
-                  >
-                    <h6>
-                      <img
-                        className={
-                          songPlaying.src === song.preview_url
-                            ? "song-image-selected"
-                            : "song-image"
-                        }
-                        alt=""
-                        src={song.album.images[0].url}
-                        onClick={() => {
-                          playMusic(song);
-                        }}
-                      />
-                      <a
-                        href={song.external_urls.spotify}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {song.name}
-                      </a>
-                    </h6>
-                  </Card>
-                </Col>
-              );
-            }
-          })}
-        </Row>
-        <Row className="centered">
-          {topTracks.items.slice(5, 10).map((song) => {
-            if (song) {
-              return (
-                <Col xs={12} md={8} lg={2}>
-                  <Card
-                    key={song.uri}
-                    className="card"
-                    style={{ textAlign: "left" }}
-                  >
-                    <h6>
-                      <img
-                        className={
-                          songPlaying.src === song.preview_url
-                            ? "song-image-selected"
-                            : "song-image"
-                        }
-                        alt=""
-                        src={song.album.images[0].url}
-                        onClick={() => {
-                          playMusic(song);
-                        }}
-                      />
-                      <a
-                        href={song.external_urls.spotify}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {song.name}
-                      </a>
-                    </h6>
-                  </Card>
-                </Col>
-              );
-            }
-          })}
-        </Row>
-      </Col>
+      <>
+        {topTracks.items.slice(0, 10).map((song) => {
+          if (song) {
+            return (
+              <li>
+                <Card key={song.uri} className="card">
+                  <h6>
+                    <img
+                      className={
+                        songPlaying.src === song.preview_url
+                          ? "card-image-selected"
+                          : "card-image"
+                      }
+                      alt=""
+                      src={song.album.images[0].url}
+                      onClick={() => {
+                        playMusic(song);
+                      }}
+                    />
+                    <a
+                      href={song.external_urls.spotify}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {song.name}
+                    </a>
+                  </h6>
+                </Card>
+              </li>
+            );
+          }
+        })}
+      </>
     );
   }
 
@@ -379,6 +347,7 @@ export default function UserStats() {
       "#0077B6",
       "#8E7DBE",
     ];
+
     let energyArray = audioFeatures.map((item) => item.energy);
     let averageIndex = Math.round(6 * average(energyArray));
     let lowestIndex = Math.round(6 * Math.min(...energyArray));
@@ -444,6 +413,9 @@ export default function UserStats() {
       "Ears",
       "Whiskers",
     ];
+    if (isEqual(audioFeatures, {})) {
+      return <p>Loading</p>;
+    }
 
     let energyArray = audioFeatures.map((item) => item.energy);
     let averageEnergy = average(energyArray).toFixed(2);
@@ -551,7 +523,7 @@ export default function UserStats() {
         borderRadius: "50%",
         width: "200px",
         height: "200px",
-        margin: "1% auto",
+        margin: "auto",
         backgroundColor: computeCatColor(),
       };
       const leftEarCss = {
@@ -628,28 +600,30 @@ export default function UserStats() {
       };
 
       return (
-        <Col>
-          <Row>
-            <div id="cat-container" style={containerCss}>
-              <div id="head" style={headCss}>
-                <div id="left-eye" />
-                <div id="right-eye" />
-                <div id="nose" />
+        <div id="cat-container" style={containerCss}>
+          <Jumbotron>
+            <h1 class="display-4">Your Purrsona</h1>
+            <p class="lead">
+              Have a cat visualization created based on your spotify data!
+            </p>
+          </Jumbotron>
 
-                <div id="left-ear" style={leftEarCss} />
-                <div id="right-ear" style={rightEarCss} />
+          <div id="head" style={headCss}>
+            <div id="left-eye" />
+            <div id="right-eye" />
+            <div id="nose" />
 
-                <div id="whisker1" style={whisker1} />
-                <div id="whisker2" style={whisker2} />
-                <div id="whisker3" style={whisker3} />
-                <div id="whisker4" style={whisker4} />
+            <div id="left-ear" style={leftEarCss} />
+            <div id="right-ear" style={rightEarCss} />
 
-                <div id="tongue" style={tongueCss} />
-              </div>
-            </div>
-          </Row>
-          {catVisTooltips()}
-        </Col>
+            <div id="whisker1" style={whisker1} />
+            <div id="whisker2" style={whisker2} />
+            <div id="whisker3" style={whisker3} />
+            <div id="whisker4" style={whisker4} />
+
+            <div id="tongue" style={tongueCss} />
+          </div>
+        </div>
       );
     }
     return <p>Loading cat visualization...</p>;
@@ -712,60 +686,57 @@ export default function UserStats() {
   return (
     <>
       <Navigation />
-      <Container>
-        <br></br>
-        <Jumbotron style={{ textAlign: "center" }}>
-          <h1 class="display-4">Your Spotify Purrsona</h1>
-          <p class="lead">
-            Have a cat visualization created based on your spotify data!
-          </p>
-        </Jumbotron>
-      </Container>
-      {loggedIn ? (
-        <Container fluid css={styles}>
-          <Row>
-            <h4 className="centered">Select timeframe for data:</h4>
-          </Row>
-          <Row className="centered">
-            <Col></Col>
-            {displayTimeframeButtons()}
-            <Col></Col>
-          </Row>
 
-          <Row>
-            <h4 className="centered">
-              Cat visualization created based on your top songs
-            </h4>
-          </Row>
-          <Row>{displayCatVis()}</Row>
-
-          <Row>
-            <h4 className="centered">Your Top 10 Artists</h4>
-          </Row>
-          <Row className="cards-container centered">
-            {topArtists !== {} ? (
-              displayTopArtists()
-            ) : (
-              <p>Loading top artists...</p>
-            )}
-          </Row>
-
-          <Row>
-            <h4 className="centered">Your Top 10 Songs</h4>
-          </Row>
-          <Row className="cards-container centered">
-            {topTracks !== {} ? (
-              displayTopTracks()
-            ) : (
-              <p>Loading top tracks...</p>
-            )}
-          </Row>
-        </Container>
-      ) : (
-        <Container fluid css={styles}>
-          <Login />
-        </Container>
-      )}
+      <Row css={styles}>
+        <Col style={{ backgroundColor: "white" }}>
+          {loggedIn ? (
+            displayCatVis()
+          ) : (
+            <>
+              <Jumbotron>
+                <h1 class="display-4">Your Purrsona</h1>
+                <p class="lead">
+                  Have a cat visualization created based on your spotify data!
+                </p>
+              </Jumbotron>
+            </>
+          )}
+        </Col>
+        <Col style={{ padding: "0px" }}>
+          {loggedIn ? (
+            <>
+              <Row className="centered">{displayTimeframeButtons()}</Row>
+              <Row>{catVisTooltips()}</Row>
+              <Row>
+                <Col>
+                  <h4 className="centered"> Top Songs </h4>
+                  <ul className="cards-container">
+                    {topTracks !== {} ? (
+                      displayTopTracks()
+                    ) : (
+                      <p>Loading top tracks...</p>
+                    )}
+                  </ul>
+                </Col>
+                <Col>
+                  <h4 className="centered"> Top Artists </h4>
+                  <ul className="cards-container">
+                    {topArtists !== {} ? (
+                      displayTopArtists()
+                    ) : (
+                      <p>Loading top artists...</p>
+                    )}
+                  </ul>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <Login />
+            </>
+          )}
+        </Col>
+      </Row>
     </>
   );
 }

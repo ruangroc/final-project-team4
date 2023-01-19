@@ -9,7 +9,7 @@ export default function Navigation() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto"></Nav>
         <Nav>
-          <Nav.Link href="/userstats">spotify purrsona</Nav.Link>
+          <Nav.Link href="/userstats"> purrsona</Nav.Link>
           <Nav.Link href="/combineplaylists">concat playlists</Nav.Link>
           <Nav.Link href="/developers">about</Nav.Link>
         </Nav>
