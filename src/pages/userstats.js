@@ -33,13 +33,21 @@ export default function UserStats() {
       margin: 1%;
     }
     .card-image {
+      object-fit: cover;
       width: 70px;
+      height: 70px;
+      padding: 5px;
       opacity: 0.6;
+      float: left;
     }
 
     .card-image-selected {
+      object-fit: cover;
       width: 70px;
+      height: 70px;
       opacity: 1;
+      padding: 5px;
+      float: left;
     }
 
     .card {
@@ -50,17 +58,15 @@ export default function UserStats() {
       color: black;
     }
 
-    .cardImg {
-      object-fit: cover;
-      width: 70px;
-      height: 70px;
-    }
-
     .cardImgArtist {
+      float: left;
       object-fit: cover;
       width: 70px;
       height: 70px;
       border-radius: 50%;
+      padding: 5px;
+      float: left;
+      opacity: 0.9;
     }
 
     .cards-container {
@@ -88,35 +94,59 @@ export default function UserStats() {
     }
     #left-eye {
       width: 15px;
-      height: 15px;
+      height: 20px;
       border-radius: 50%;
       position: relative;
-      top: 50%;
-      left: 20%;
+      top: 42%;
+      left: 25%;
       background-color: black;
       margin: 0px;
       display: inline-block;
     }
     #right-eye {
       width: 15px;
-      height: 15px;
+      height: 20px;
       border-radius: 50%;
       position: relative;
-      top: 50%;
-      left: 70%;
+      top: 43%;
+      left: 60%;
       background-color: black;
+      margin: 0px;
+      display: inline-block;
+    }
+    #left-cheek {
+      width: 30px;
+      height: 22px;
+      border-radius: 50%;
+      position: relative;
+      top: 55%;
+      left: -2%;
+      background-color: pink;
+      margin: 0px;
+      display: inline-block;
+      opacity: 0.7;
+    }
+    #right-cheek {
+      width: 30px;
+      height: 22px;
+      border-radius: 50%;
+      position: relative;
+      top: 55%;
+      left: 45%;
+      background-color: pink;
+      opacity: 0.7;
       margin: 0px;
       display: inline-block;
     }
     #nose {
       width: 0;
       height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-top: 20px solid #000;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #000;
       position: relative;
-      top: 60%;
-      left: 45%;
+      top: 50%;
+      left: 47%;
     }
     .explanations {
       width: 85%;
@@ -250,7 +280,7 @@ export default function UserStats() {
         return (
           <li>
             <Card key={artist.uri} className="card">
-              <h6>
+              <div>
                 <img
                   className="cardImgArtist"
                   src={
@@ -266,9 +296,9 @@ export default function UserStats() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {artist.name}
+                  <h6>{artist.name}</h6>
                 </a>
-              </h6>
+              </div>
             </Card>
           </li>
         );
@@ -301,7 +331,7 @@ export default function UserStats() {
             return (
               <li>
                 <Card key={song.uri} className="card">
-                  <h6>
+                  <div>
                     <img
                       className={
                         songPlaying.src === song.preview_url
@@ -319,9 +349,10 @@ export default function UserStats() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {song.name}
+                      <h6>{song.name} </h6>
+                      by {song.artists[0].name}
                     </a>
-                  </h6>
+                  </div>
                 </Card>
               </li>
             );
@@ -523,7 +554,7 @@ export default function UserStats() {
         borderRadius: "50%",
         width: "200px",
         height: "200px",
-        margin: "auto",
+        margin: "100px auto",
         backgroundColor: computeCatColor(),
       };
       const leftEarCss = {
@@ -533,7 +564,7 @@ export default function UserStats() {
         borderRight: "30px solid transparent",
         borderTop: "50px solid " + computeCatColor(),
         position: "relative",
-        top: "-10%",
+        top: "-9%",
         left: "-5%",
         display: "inline-block",
         animation:
@@ -546,7 +577,7 @@ export default function UserStats() {
         borderRight: "30px solid transparent",
         borderTop: "50px solid " + computeCatColor(),
         position: "relative",
-        top: "-10%",
+        top: "-9%",
         left: "45%",
         display: "inline-block",
         animation:
@@ -555,7 +586,7 @@ export default function UserStats() {
       const tongueCss = {
         position: "relative",
         top: "35%",
-        left: "50%",
+        left: "47%",
         width: "20px",
         height: "20px",
         backgroundColor: "#ffb4a2",
@@ -568,35 +599,35 @@ export default function UserStats() {
       };
       const whisker1 = {
         backgroundColor: "black",
-        height: "2px",
+        height: "1px",
         width: computeWhiskerLength(),
         position: "relative",
         top: "20%",
-        left: "-10%",
+        left: "-28%",
       };
       const whisker2 = {
         backgroundColor: "black",
-        height: "2px",
+        height: "1px",
         width: computeWhiskerLength(),
         position: "relative",
         top: "25%",
-        left: "-10%",
+        left: "-26%",
       };
       const whisker3 = {
         backgroundColor: "black",
-        height: "2px",
+        height: "1px",
         width: computeWhiskerLength(),
         position: "relative",
         top: "17%",
-        left: "80%",
+        left: "90%",
       };
       const whisker4 = {
         backgroundColor: "black",
-        height: "2px",
+        height: "1px",
         width: computeWhiskerLength(),
         position: "relative",
         top: "22%",
-        left: "80%",
+        left: "87%",
       };
 
       return (
@@ -606,11 +637,15 @@ export default function UserStats() {
             <p class="lead">
               Have a cat visualization created based on your spotify data!
             </p>
+            <p>Select a time frame to see how your music taste has changed</p>
+            {displayTimeframeButtons()}
           </Jumbotron>
 
           <div id="head" style={headCss}>
             <div id="left-eye" />
             <div id="right-eye" />
+            <div id="left-cheek" />
+            <div id="right-cheek" />
             <div id="nose" />
 
             <div id="left-ear" style={leftEarCss} />
@@ -631,55 +666,51 @@ export default function UserStats() {
 
   function displayTimeframeButtons() {
     return (
-      <Col xs={11} md={8} lg={8}>
-        <ButtonGroup style={{ width: "100%" }}>
-          <OverlayTrigger
-            placement="bottom"
-            overlay={explanationTooltip("The last 4 weeks")}
+      <ButtonGroup>
+        <OverlayTrigger
+          placement="bottom"
+          overlay={explanationTooltip("The last 4 weeks")}
+        >
+          <Button
+            className={
+              dataTimeframe === "short_term" ? "active-button" : "card"
+            }
+            onClick={() => {
+              setDataTimeframe("short_term");
+            }}
           >
-            <Button
-              className={
-                dataTimeframe === "short_term" ? "active-button" : "card"
-              }
-              onClick={() => {
-                setDataTimeframe("short_term");
-              }}
-            >
-              <h6 className="centered">Short Term</h6>
-            </Button>
-          </OverlayTrigger>
-          <OverlayTrigger
-            placement="bottom"
-            overlay={explanationTooltip("The last 6 months")}
+            <h6 className="centered">Short </h6>
+          </Button>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="bottom"
+          overlay={explanationTooltip("The last 6 months")}
+        >
+          <Button
+            className={
+              dataTimeframe === "medium_term" ? "active-button" : "card"
+            }
+            onClick={() => {
+              setDataTimeframe("medium_term");
+            }}
           >
-            <Button
-              className={
-                dataTimeframe === "medium_term" ? "active-button" : "card"
-              }
-              onClick={() => {
-                setDataTimeframe("medium_term");
-              }}
-            >
-              <h6 className="centered">Medium Term</h6>
-            </Button>
-          </OverlayTrigger>
-          <OverlayTrigger
-            placement="bottom"
-            overlay={explanationTooltip("All data")}
+            <h6 className="centered">Medium </h6>
+          </Button>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="bottom"
+          overlay={explanationTooltip("All data")}
+        >
+          <Button
+            className={dataTimeframe === "long_term" ? "active-button" : "card"}
+            onClick={() => {
+              setDataTimeframe("long_term");
+            }}
           >
-            <Button
-              className={
-                dataTimeframe === "long_term" ? "active-button" : "card"
-              }
-              onClick={() => {
-                setDataTimeframe("long_term");
-              }}
-            >
-              <h6 className="centered">Long Term</h6>
-            </Button>
-          </OverlayTrigger>
-        </ButtonGroup>
-      </Col>
+            <h6 className="centered">Long</h6>
+          </Button>
+        </OverlayTrigger>
+      </ButtonGroup>
     );
   }
 
@@ -705,7 +736,10 @@ export default function UserStats() {
         <Col style={{ padding: "0px" }}>
           {loggedIn ? (
             <>
-              <Row className="centered">{displayTimeframeButtons()}</Row>
+              <h4 className="centered"> Cat Characteristics: </h4>
+              <p class="lead centered">
+                Curious about your cat? Learn how we made your cat below.
+              </p>
               <Row>{catVisTooltips()}</Row>
               <Row>
                 <Col>
