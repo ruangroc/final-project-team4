@@ -403,10 +403,19 @@ export default function UserStats() {
 
   // songs mostly in major key (1) = lighter color, songs mostly in minor key (0) = darker color
   function computeCatColor() {
-    let modeArray = audioFeatures.map((item) => item.mode);
-    let averageMode = average(modeArray);
-    if (Math.round(averageMode) === 1) return "#fefae0";
-    else return "#432818";
+    const colors = [
+      "#201F1D",
+      "#403d39",
+      "#8f7d6f",
+      "#dea369",
+      "#ead4b4",
+      "#ffe1a8",
+      "#fefae0",
+      "#ffffff",
+    ];
+    let valenceArray = audioFeatures.map((item) => item.valence);
+    let index = Math.round(7 * average(valenceArray));
+    return colors[index];
   }
 
   // assumed bpm range of 0-200, will map to a 0-4 second interval
@@ -468,15 +477,17 @@ export default function UserStats() {
       " Opacity is based on the average loudness of your top 10 songs (solid = louder). Your average song loudness: " +
       -1 * averageOpacity;
 
-    let averageKey = average(audioFeatures.map((item) => item.mode)).toFixed(2);
-    const catColor =
-      "The color of your cat is based on whether more of your top 10 songs are in major or minor key (major = cream cat, minor = chocolate cat)." +
-      " \nYour average song key: " +
-      averageKey;
-
-    let averageTempo = average(audioFeatures.map((item) => item.tempo)).toFixed(
+    let averageKey = average(audioFeatures.map((item) => item.valence)).toFixed(
       2
     );
+    const catColor =
+      "The color of your cat is based on the average valence of your top ten songs. Valence describes the musical positiveness conveyed by a track. High valence tracks sound more positive while tracks with low valence sound more negative." +
+      " \nYour average song valence: " +
+      averageKey;
+
+    let averageTempo = average(
+      audioFeatures.map((item) => item.valence)
+    ).toFixed(2);
     const tongue =
       "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). \nYour average song tempo: " +
       averageTempo;
@@ -603,7 +614,7 @@ export default function UserStats() {
         width: computeWhiskerLength(),
         position: "relative",
         top: "20%",
-        left: "-28%",
+        left: "-20%",
       };
       const whisker2 = {
         backgroundColor: "black",
@@ -611,7 +622,7 @@ export default function UserStats() {
         width: computeWhiskerLength(),
         position: "relative",
         top: "25%",
-        left: "-26%",
+        left: "-20%",
       };
       const whisker3 = {
         backgroundColor: "black",
