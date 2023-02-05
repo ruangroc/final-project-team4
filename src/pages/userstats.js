@@ -119,30 +119,6 @@ export default function UserStats() {
       margin: 0px;
       display: inline-block;
     }
-    #left-cheek {
-      width: 30px;
-      height: 22px;
-      border-radius: 50%;
-      position: absolute;
-      top: 55%;
-      left: 12%;
-      background-color: pink;
-      margin: 0px;
-      display: inline-block;
-      opacity: 0.7;
-    }
-    #right-cheek {
-      width: 30px;
-      height: 22px;
-      border-radius: 50%;
-      position: absolute;
-      top: 55%;
-      left: 73%;
-      background-color: pink;
-      opacity: 0.7;
-      margin: 0px;
-      display: inline-block;
-    }
     #nose {
       width: 0;
       height: 0;
@@ -400,10 +376,10 @@ export default function UserStats() {
   }
 
   // background opacity ranges from 0.0 to 1.0, loudness ranges from about -65 to 0 decibels, so 1.0 opacity == loud
-  function computeBackgroundOpacity() {
+  function computeCheeksOpacity() {
     let loudnessArray = audioFeatures.map((item) => item.loudness);
     let averageLoudness = average(loudnessArray);
-    return (averageLoudness + 65) * (1 / 65);
+    return (averageLoudness + 70) * (1 / 100);
   }
 
   // songs mostly in major key (1) = lighter color, songs mostly in minor key (0) = darker color
@@ -453,7 +429,7 @@ export default function UserStats() {
     const tooltipTitles = [
       "*",
       "Background Colors",
-      "Background Opacity",
+      "Cheeks",
       "Color",
       "Tongue",
       "Ears",
@@ -471,7 +447,7 @@ export default function UserStats() {
     const home =
       "Curious about your cat? Learn more by clicking the attributes. ";
     const background =
-      "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy, red = low energy)." +
+    "Color gradient is based on the min, avg, and max energy values of your top 10 songs (purple = high energy, red = low energy). Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy." +
       "\nYour min: " +
       minEnergy +
       " avg: " +
@@ -483,22 +459,21 @@ export default function UserStats() {
       audioFeatures.map((item) => item.loudness)
     ).toFixed(2);
     const opacity =
-      " Opacity is based on the average loudness of your top 10 songs (solid = louder). Your average song loudness: " +
-      -1 * averageOpacity;
+    " Cheek opacity is based on the average loudness of your top 10 songs (solid = louder). Loudness values are averaged across the entire track and are useful for comparing relative loudness of tracks. Loudness is the quality of a sound that is the primary psychological correlate of physical strength (amplitude). Values typically range between -60 and 0 db. Your average song loudness: " +
+    averageOpacity + "dB.";
 
     let averageKey = average(audioFeatures.map((item) => item.valence)).toFixed(
       2
     );
     const catColor =
-      "The color of your cat is based on the average valence of your top ten songs. Valence describes the musical positiveness conveyed by a track. High valence tracks sound more positive while tracks with low valence sound more negative." +
-      " \nYour average song valence: " +
-      averageKey;
+    "The color of your cat is based on the average valence of your top ten songs, the lighter your cat is the higher your average valence is. Valence describes the musical positiveness conveyed by a track. High valence tracks sound more positive while tracks with low valence sound more negative." +
+      " \nYour average song valence: " + averageKey;
 
     let averageTempo = average(
       audioFeatures.map((item) => item.valence)
     ).toFixed(2);
     const tongue =
-      "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). \nYour average song tempo: " +
+    "The animation speed is based on the average tempo of your top 10 songs (higher bpm = faster animation). The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration. \nYour average song tempo: " +
       averageTempo;
 
     let averageDanceability = average(
@@ -559,8 +534,7 @@ export default function UserStats() {
   function displayCatVis() {
     if (audioFeatures.length) {
       const containerCss = {
-        background: computeBackgroundColor(),
-        opacity: computeBackgroundOpacity(),
+        background: computeBackgroundColor()
       };
       const headCss = {
         borderRadius: "50%",
@@ -598,6 +572,30 @@ export default function UserStats() {
         display: "inline-block",
         animation:
           "ear-animation infinite " + computeEarAnimationSpeed() + "s both",
+      };
+      const leftCheekCss = {
+        width: "30px",
+        height: "22px",
+        borderRadius: "50%",
+        position: "absolute",
+        top: "55%",
+        left: "12%",
+        display: "inline-block",
+        margin: "0px",
+        opacity: computeCheeksOpacity(),
+        backgroundColor: "#ff85a1",
+      };
+      const rightCheekCss = {
+        width: "30px",
+        height: "22px",
+        borderRadius: "50%",
+        position: "absolute",
+        top: "55%",
+        left: "73%",
+        display: "inline-block",
+        margin: "0px",
+        opacity: computeCheeksOpacity(),
+        backgroundColor: "#ff85a1",
       };
       const tongueCss = {
         position: "absolute",
@@ -660,8 +658,8 @@ export default function UserStats() {
           <div id="head" style={headCss}>
             <div id="left-eye" />
             <div id="right-eye" />
-            <div id="left-cheek" />
-            <div id="right-cheek" />
+            <div id="left-cheek" style={leftCheekCss} />
+            <div id="right-cheek" style={rightCheekCss} />
             <div id="nose" />
 
             <div id="left-ear" style={leftEarCss} />
